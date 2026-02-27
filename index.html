@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爱情表达模式测试</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f7f7f7; padding:20px; }
+.container { max-width:600px; margin:auto; background:white; padding:20px; border-radius:12px; }
+h1 { text-align:center; }
+.question { margin-bottom:20px; }
+button { padding:10px 20px; background:black; color:white; border:none; border-radius:6px; cursor:pointer; }
+.result { display:none; margin-top:20px; padding:20px; background:#fafafa; border-radius:8px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>你在爱情中的表达模式测试</h1>
+
+<form id="quizForm">
+
+<script>
+const questions = [
+"Q1 当对方情绪低落时，你第一反应是？",
+"Q2 你觉得“被爱”的感觉更像？",
+"Q3 吵架后你更倾向？",
+"Q4 你表达喜欢的方式？",
+"Q5 你最受不了伴侣？",
+"Q6 纪念日对你来说？",
+"Q7 你更愿意？",
+"Q8 你认为浪漫是？",
+"Q9 冲突中你最害怕？",
+"Q10 你在关系里更像？",
+"Q11 如果只能选一个？",
+"Q12 你最想听到？"
+];
+
+questions.forEach((q, i) => {
+document.write(`<div class="question">
+<p>${q}</p>
+<label><input type="radio" name="q${i}" value="A" required> A</label><br>
+<label><input type="radio" name="q${i}" value="B"> B</label><br>
+<label><input type="radio" name="q${i}" value="C"> C</label><br>
+<label><input type="radio" name="q${i}" value="D"> D</label>
+</div>`);
+});
+</script>
+
+<button type="submit">查看结果</button>
+</form>
+
+<div id="result" class="result"></div>
+
+</div>
+
+<script>
+document.getElementById("quizForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+let scores = {A:0,B:0,C:0,D:0};
+for(let i=0;i<12;i++){
+let answer = document.querySelector(`input[name="q${i}"]:checked`).value;
+scores[answer]++;
+}
+
+let resultText = "";
+let maxType = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+
+if(maxType==="A"){
+resultText="🌙 语言确认型：你爱得真诚，需要被听见。";
+}
+if(maxType==="B"){
+resultText="🔥 行动付出型：你不多说，但从不缺席。";
+}
+if(maxType==="C"){
+resultText="🌊 陪伴沉浸型：对你来说，爱就是一起。";
+}
+if(maxType==="D"){
+resultText="💎 现实投入型：你爱得理性，也很认真。";
+}
+
+document.getElementById("result").style.display="block";
+document.getElementById("result").innerHTML = "<h2>测试结果</h2><p>"+resultText+"</p><br><p>🔒 完整6页分析报告解锁价：2元<br>添加微信XXXX领取完整版</p>";
+});
+</script>
+
+</body>
+</html>
