@@ -3,51 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>爱情表达模式测试</title>
+<title>你在爱情中的表达模式测试</title>
+
 <style>
-body { font-family: Arial, sans-serif; background:#f7f7f7; padding:20px; }
-.container { max-width:600px; margin:auto; background:white; padding:20px; border-radius:12px; }
-h1 { text-align:center; }
-.question { margin-bottom:20px; }
-button { padding:10px 20px; background:black; color:white; border:none; border-radius:6px; cursor:pointer; }
-.result { display:none; margin-top:20px; padding:20px; background:#fafafa; border-radius:8px; }
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+background:linear-gradient(135deg,#f6f8fb,#eef1f7);
+padding:40px 20px;
+margin:0;
+}
+
+.container{
+max-width:680px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+h1{
+text-align:center;
+font-size:26px;
+margin-bottom:30px;
+}
+
+.question{
+margin-bottom:28px;
+}
+
+.question p{
+font-weight:600;
+margin-bottom:12px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+cursor:pointer;
+}
+
+button{
+width:100%;
+padding:14px;
+background:black;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.result{
+display:none;
+margin-top:40px;
+padding:25px;
+background:#f9fafc;
+border-radius:14px;
+}
+
+.result h2{
+margin-top:0;
+}
+
+.unlock{
+margin-top:20px;
+padding:15px;
+background:white;
+border:1px solid #ddd;
+border-radius:10px;
+text-align:center;
+}
+
+.unlock button{
+background:#111;
+margin-top:12px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
+
 <h1>你在爱情中的表达模式测试</h1>
 
 <form id="quizForm">
 
 <script>
 const questions = [
-"Q1 当对方情绪低落时，你第一反应是？",
-"Q2 你觉得“被爱”的感觉更像？",
-"Q3 吵架后你更倾向？",
-"Q4 你表达喜欢的方式？",
-"Q5 你最受不了伴侣？",
-"Q6 纪念日对你来说？",
-"Q7 你更愿意？",
-"Q8 你认为浪漫是？",
-"Q9 冲突中你最害怕？",
-"Q10 你在关系里更像？",
-"Q11 如果只能选一个？",
-"Q12 你最想听到？"
+{
+q:"Q1 当对方情绪低落时，你第一反应是？",
+options:[
+"A 说很多安慰和鼓励的话",
+"B 直接帮他解决问题",
+"C 陪着他，不一定说话",
+"D 买点他喜欢的东西"
+]
+},
+{
+q:"Q2 你觉得“被爱”的感觉更像？",
+options:[
+"A 被夸奖和认可",
+"B 被实际照顾",
+"C 有很多一起的时间",
+"D 被认真规划未来"
+]
+},
+{
+q:"Q3 吵架后你更倾向？",
+options:[
+"A 讲清楚彼此感受",
+"B 做点事情缓和气氛",
+"C 先冷静，但希望对方在身边",
+"D 给对方实际补偿"
+]
+},
+{
+q:"Q4 你表达喜欢的方式？",
+options:[
+"A 经常表达爱意",
+"B 帮对方做很多事",
+"C 主动安排见面",
+"D 给对方准备实用礼物"
+]
+},
+{
+q:"Q5 你最受不了伴侣？",
+options:[
+"A 不表达",
+"B 只说不做",
+"C 很少陪你",
+"D 不愿为未来投入"
+]
+},
+{
+q:"Q6 纪念日对你来说？",
+options:[
+"A 要有情话",
+"B 要有行动",
+"C 要一起度过",
+"D 要有实质安排"
+]
+},
+{
+q:"Q7 你更愿意？",
+options:[
+"A 听他说爱你",
+"B 看他为你做事",
+"C 跟他待一整天",
+"D 看到他为未来规划"
+]
+},
+{
+q:"Q8 你认为浪漫是？",
+options:[
+"A 语言表达",
+"B 行动惊喜",
+"C 时间沉浸",
+"D 资源投入"
+]
+},
+{
+q:"Q9 冲突中你最害怕？",
+options:[
+"A 被忽略感受",
+"B 被敷衍行动",
+"C 被冷落",
+"D 被轻视价值"
+]
+},
+{
+q:"Q10 你在关系里更像？",
+options:[
+"A 情绪连接者",
+"B 实干支持者",
+"C 温柔陪伴者",
+"D 现实规划者"
+]
+},
+{
+q:"Q11 如果只能选一个？",
+options:[
+"A 情绪共鸣",
+"B 实际帮助",
+"C 一起经历",
+"D 未来保障"
+]
+},
+{
+q:"Q12 你最想听到？",
+options:[
+"A 我真的很在乎你",
+"B 这件事我帮你搞定",
+"C 我陪你",
+"D 我为我们做了计划"
+]
+}
 ];
 
-questions.forEach((q, i) => {
+questions.forEach((item,i)=>{
 document.write(`<div class="question">
-<p>${q}</p>
-<label><input type="radio" name="q${i}" value="A" required> A</label><br>
-<label><input type="radio" name="q${i}" value="B"> B</label><br>
-<label><input type="radio" name="q${i}" value="C"> C</label><br>
-<label><input type="radio" name="q${i}" value="D"> D</label>
+<p>${item.q}</p>
+${item.options.map((opt,index)=>
+`<label><input type="radio" name="q${i}" value="${["A","B","C","D"][index]}" required> ${opt}</label>`
+).join("")}
 </div>`);
 });
 </script>
 
 <button type="submit">查看结果</button>
+
 </form>
 
 <div id="result" class="result"></div>
@@ -55,33 +222,71 @@ document.write(`<div class="question">
 </div>
 
 <script>
-document.getElementById("quizForm").addEventListener("submit", function(e){
+document.getElementById("quizForm").addEventListener("submit",function(e){
 e.preventDefault();
 
-let scores = {A:0,B:0,C:0,D:0};
+let scores={A:0,B:0,C:0,D:0};
+
 for(let i=0;i<12;i++){
-let answer = document.querySelector(`input[name="q${i}"]:checked`).value;
-scores[answer]++;
+let val=document.querySelector(`input[name="q${i}"]:checked`).value;
+scores[val]++;
 }
 
-let resultText = "";
-let maxType = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+let maxType=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+
+let content={};
 
 if(maxType==="A"){
-resultText="🌙 语言确认型：你爱得真诚，需要被听见。";
+content={
+title:"🌙 语言确认型",
+desc:"你擅长用表达建立情绪连接，重视被理解与回应。",
+adv:"优势：情绪敏感度高，沟通能力强。",
+blind:"盲区：当对方表达较少时容易不安。",
+quote:"你爱得很真，但需要被听见。"
+};
 }
 if(maxType==="B"){
-resultText="🔥 行动付出型：你不多说，但从不缺席。";
+content={
+title:"🔥 行动付出型",
+desc:"你用行动证明爱，责任感很强。",
+adv:"优势：可靠，稳定。",
+blind:"盲区：可能忽略情绪表达。",
+quote:"你不多说，但从不缺席。"
+};
 }
 if(maxType==="C"){
-resultText="🌊 陪伴沉浸型：对你来说，爱就是一起。";
+content={
+title:"🌊 陪伴沉浸型",
+desc:"对你来说，爱就是一起经历时间。",
+adv:"优势：关系粘性高，重视真实相处。",
+blind:"盲区：对疏离敏感。",
+quote:"对你来说，爱就是一起。"
+};
 }
 if(maxType==="D"){
-resultText="💎 现实投入型：你爱得理性，也很认真。";
+content={
+title:"💎 现实投入型",
+desc:"你对关系有长期视角，重视实际保障。",
+adv:"优势：规划能力强。",
+blind:"盲区：可能被误解为太理性。",
+quote:"你爱得理性，也很认真。"
+};
 }
 
 document.getElementById("result").style.display="block";
-document.getElementById("result").innerHTML = "<h2>测试结果</h2><p>"+resultText+"</p><br><p>🔒 完整6页分析报告解锁价：2元<br>添加微信XXXX领取完整版</p>";
+document.getElementById("result").innerHTML=`
+<h2>${content.title}</h2>
+<p>${content.desc}</p>
+<p><strong>${content.adv}</strong></p>
+<p>${content.blind}</p>
+<p><em>${content.quote}</em></p>
+
+<div class="unlock">
+🔒 完整6页深度分析报告<br>
+包含：恋爱优势 / 关系盲区 / 适配伴侣类型 / 冲突模式解析<br>
+<button onclick="alert('这里可以放支付链接')">2元解锁完整版</button>
+</div>
+`;
 });
 </script>
 
