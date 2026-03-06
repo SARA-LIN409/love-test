@@ -1,731 +1,220 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>爱的频率 · 亲密联结风格测试</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+
 <style>
-:root {
-  --cream: #fdf8f2;
-  --blush: #f5e6df;
-  --rose: #c9816a;
-  --rose-deep: #a86452;
-  --sage: #7fa090;
-  --sage-light: #c4d9d0;
-  --gold: #c4a070;
-  --lavender: #a08ab0;
-  --text-dark: #3a2820;
-  --text-mid: #7a5a50;
-  --text-light: #b89080;
-  --card-bg: rgba(255,255,255,0.78);
-  --shadow-soft: 0 8px 48px rgba(160,100,80,0.11);
-  --shadow-card: 0 4px 24px rgba(160,100,80,0.09);
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+margin:0;
+padding:40px 20px;
+background:linear-gradient(135deg,#fdf6f8,#f6f0ff);
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'Noto Serif SC', serif;
-  background: var(--cream);
-  color: var(--text-dark);
-  min-height: 100vh;
-  overflow-x: hidden;
-  line-height: 1.6;
+.container{
+max-width:720px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background:
-    radial-gradient(ellipse 55% 45% at 10% 15%, rgba(201,129,106,0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 55% at 88% 78%, rgba(127,160,144,0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 35% 35% at 55% 45%, rgba(196,160,112,0.06) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
+h1{
+text-align:center;
+font-size:28px;
+margin-bottom:10px;
 }
 
-/* ─── Screens ─── */
-.screen {
-  position:relative; z-index:1;
-  display:none;
-  min-height:100vh;
-  padding:40px 20px 60px;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  animation: fadeUp .55s ease both;
-}
-.screen.active { display:flex; }
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(22px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-@keyframes slideCardIn {
-  from { opacity:0; transform:translateY(28px) scale(.97); }
-  to   { opacity:1; transform:translateY(0) scale(1); }
-}
-@keyframes floatY {
-  0%,100% { transform:translateY(0) rotate(-4deg); }
-  50%      { transform:translateY(-10px) rotate(4deg); }
+.subtitle{
+text-align:center;
+color:#777;
+margin-bottom:30px;
 }
 
-/* ─── Floating deco ─── */
-.deco-bg {
-  position:fixed; pointer-events:none; z-index:0; opacity:.35;
-  font-size:72px;
-  animation: floatY 7s ease-in-out infinite;
-}
-.deco-bg.d1 { top:6%; right:4%; }
-.deco-bg.d2 { bottom:10%; left:2%; font-size:56px; animation-delay:-3s; animation-direction:reverse; }
-
-/* ─────────────────────────
-   WELCOME SCREEN
-───────────────────────── */
-.welcome-wrap { max-width:500px; width:100%; text-align:center; }
-
-.welcome-icon { font-size:54px; display:block; margin-bottom:14px; animation:floatY 3.5s ease-in-out infinite; }
-
-.badge {
-  display:inline-block;
-  background:linear-gradient(130deg, var(--rose), var(--gold));
-  color:#fff; font-size:10.5px; letter-spacing:2.5px;
-  padding:4px 16px; border-radius:20px; margin-bottom:22px;
-  font-weight:500;
+.question{
+margin-bottom:28px;
 }
 
-.welcome-title {
-  font-family:'Ma Shan Zheng', cursive;
-  font-size:40px; color:var(--text-dark);
-  line-height:1.25; margin-bottom:6px;
-}
-.welcome-en {
-  font-size:11px; letter-spacing:4px; color:var(--text-light);
-  margin-bottom:30px;
+.question p{
+font-weight:600;
+margin-bottom:10px;
 }
 
-.welcome-card {
-  background:var(--card-bg);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.92);
-  border-radius:24px; padding:30px 32px;
-  box-shadow:var(--shadow-soft);
-  margin-bottom:28px; text-align:left;
-}
-.welcome-card p { font-size:14px; line-height:2; color:var(--text-mid); }
-.welcome-card strong { color:var(--rose); }
-
-.type-pills {
-  display:flex; flex-wrap:wrap; gap:8px;
-  margin-top:20px; justify-content:center;
-}
-.type-pill {
-  background:linear-gradient(130deg,rgba(245,230,220,.85),rgba(196,217,208,.65));
-  border:1px solid rgba(201,129,106,.22);
-  border-radius:20px; padding:6px 14px;
-  font-size:11.5px; color:var(--text-mid);
+label{
+display:block;
+margin-bottom:8px;
+cursor:pointer;
 }
 
-.btn-primary {
-  display:inline-block;
-  background:linear-gradient(130deg, var(--rose) 0%, var(--gold) 100%);
-  color:#fff; font-family:'Noto Serif SC', serif;
-  font-size:16px; padding:15px 46px;
-  border-radius:50px; border:none; cursor:pointer;
-  box-shadow:0 8px 28px rgba(201,129,106,.38);
-  transition:transform .25s, box-shadow .25s;
-  letter-spacing:1px;
-}
-.btn-primary:hover  { transform:translateY(-2px); box-shadow:0 12px 36px rgba(201,129,106,.48); }
-.btn-primary:active { transform:translateY(0); }
-
-.time-note { font-size:11.5px; color:var(--text-light); margin-top:14px; letter-spacing:1px; }
-
-/* ─────────────────────────
-   QUIZ SCREEN
-───────────────────────── */
-.quiz-wrap { max-width:560px; width:100%; }
-
-.progress-area { margin-bottom:28px; }
-.progress-top {
-  display:flex; justify-content:space-between; align-items:center;
-  margin-bottom:10px;
-}
-.q-counter { font-size:12px; color:var(--text-light); letter-spacing:1.5px; }
-.q-counter em { color:var(--rose); font-style:normal; font-size:17px; font-weight:600; }
-
-.progress-bar { height:4px; background:rgba(201,129,106,.12); border-radius:4px; overflow:hidden; }
-.progress-fill {
-  height:100%;
-  background:linear-gradient(90deg, var(--rose), var(--gold));
-  border-radius:4px;
-  transition:width .55s cubic-bezier(.4,0,.2,1);
-  width:0%;
+button{
+width:100%;
+padding:14px;
+background:#222;
+color:white;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+margin-top:20px;
 }
 
-.question-card {
-  background:var(--card-bg);
-  backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.95);
-  border-radius:26px; padding:34px 34px 26px;
-  box-shadow:var(--shadow-soft);
-  margin-bottom:18px;
-  animation:slideCardIn .42s cubic-bezier(.34,1.5,.64,1) both;
-}
-.q-label { font-size:10.5px; letter-spacing:2.5px; color:var(--rose); margin-bottom:10px; display:block; }
-.q-text  { font-size:17.5px; line-height:1.75; color:var(--text-dark); font-weight:500; }
-
-.options-list { display:flex; flex-direction:column; gap:11px; }
-
-.opt-btn {
-  display:flex; align-items:flex-start; gap:12px;
-  background:rgba(255,255,255,.70);
-  border:1.5px solid rgba(201,129,106,.18);
-  border-radius:16px; padding:15px 18px;
-  font-family:'Noto Serif SC', serif;
-  font-size:13.5px; color:var(--text-mid);
-  text-align:left; cursor:pointer;
-  transition:border-color .22s, transform .22s, background .22s, box-shadow .22s;
-  line-height:1.65; position:relative; overflow:hidden;
-}
-.opt-btn:hover {
-  border-color:rgba(201,129,106,.45);
-  transform:translateX(4px);
-  color:var(--text-dark);
-  background:rgba(255,248,244,.85);
-}
-.opt-btn.selected {
-  border-color:var(--rose);
-  background:linear-gradient(130deg,rgba(245,225,216,.95),rgba(253,248,242,.9));
-  color:var(--text-dark);
-  transform:translateX(6px);
-  box-shadow:0 4px 18px rgba(201,129,106,.18);
+.result{
+display:none;
+margin-top:40px;
 }
 
-.opt-letter {
-  flex-shrink:0;
-  width:24px; height:24px;
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(201,129,106,.13);
-  border-radius:50%; font-size:10.5px;
-  font-weight:700; color:var(--rose);
-  transition:background .22s, color .22s;
-  margin-top:1px;
-}
-.opt-btn.selected .opt-letter { background:var(--rose); color:#fff; }
-
-/* ─────────────────────────
-   RESULT SCREEN
-───────────────────────── */
-.result-wrap { max-width:560px; width:100%; }
-
-.result-header { text-align:center; margin-bottom:26px; }
-.result-emoji-row { font-size:42px; letter-spacing:10px; margin-bottom:8px; }
-.result-title {
-  font-family:'Ma Shan Zheng', cursive;
-  font-size:34px; color:var(--text-dark);
-  line-height:1.3; margin-bottom:4px;
-}
-.result-subtitle { font-size:12.5px; color:var(--text-light); letter-spacing:1px; }
-
-.result-card {
-  background:var(--card-bg);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.95);
-  border-radius:22px; padding:26px 30px;
-  box-shadow:var(--shadow-card);
-  margin-bottom:14px;
+.card{
+background:white;
+border-radius:24px;
+padding:30px;
+box-shadow:0 20px 50px rgba(0,0,0,0.1);
+background:linear-gradient(160deg,#ffffff,#fff6fb);
 }
 
-.sec-title {
-  font-size:10.5px; letter-spacing:2px; color:var(--rose);
-  display:flex; align-items:center; gap:8px;
-  margin-bottom:13px;
-}
-.sec-title::after {
-  content:''; flex:1; height:1px;
-  background:linear-gradient(90deg,rgba(201,129,106,.28),transparent);
+.card h2{
+margin-top:0;
+font-size:22px;
 }
 
-.sec-body { font-size:14px; line-height:2.05; color:var(--text-mid); }
-
-/* Score bars */
-.bar-row { margin-bottom:13px; }
-.bar-row:last-child { margin-bottom:0; }
-.bar-top {
-  display:flex; justify-content:space-between;
-  font-size:12.5px; color:var(--text-mid); margin-bottom:6px;
-}
-.bar-track { height:8px; background:rgba(201,129,106,.09); border-radius:8px; overflow:hidden; }
-.bar-fill  { height:100%; border-radius:8px; transition:width 1.3s cubic-bezier(.4,0,.2,1); width:0%; }
-
-/* Tip */
-.tip-card {
-  background:linear-gradient(130deg,rgba(245,228,218,.88),rgba(196,217,208,.55));
-  border:1px solid rgba(201,129,106,.18);
-  border-radius:22px; padding:24px 28px;
-  margin-bottom:22px;
-}
-.tip-icon  { font-size:28px; margin-bottom:8px; display:block; }
-.tip-label { font-size:10px; letter-spacing:2.5px; color:var(--sage); margin-bottom:10px; }
-.tip-text  { font-size:13.5px; line-height:2; color:var(--text-mid); font-style:italic; }
-
-.btn-ghost {
-  display:block; width:100%;
-  background:transparent;
-  border:1.5px solid rgba(201,129,106,.35);
-  color:var(--rose);
-  font-family:'Noto Serif SC', serif;
-  font-size:14px; padding:14px; border-radius:50px;
-  cursor:pointer; transition:all .25s; letter-spacing:1px;
-}
-.btn-ghost:hover { background:rgba(201,129,106,.07); border-color:var(--rose); }
-
-.fine-print {
-  text-align:center; font-size:11px;
-  color:var(--text-light); letter-spacing:1px;
-  margin-top:14px;
+.tag{
+margin-top:20px;
+font-size:18px;
+font-weight:600;
 }
 
-@media(max-width:480px){
-  .welcome-title { font-size:32px; }
-  .question-card { padding:24px 20px 20px; }
-  .result-card   { padding:22px 22px; }
-  .q-text        { font-size:16px; }
-  .opt-btn       { font-size:13px; padding:13px 15px; }
-  .result-title  { font-size:28px; }
+.footer{
+margin-top:20px;
+font-size:14px;
+color:#888;
+text-align:center;
 }
 </style>
 </head>
+
 <body>
 
-<div class="deco-bg d1">🌸</div>
-<div class="deco-bg d2">🕯️</div>
+<div class="container">
+<h1>🌸 爱的频率 · 亲密联结风格测试</h1>
+<div class="subtitle">测测你在亲密关系中的联结方式</div>
 
-<!-- ═══════════════════════════
-     WELCOME
-═══════════════════════════ -->
-<div class="screen active" id="screen-welcome">
-  <div class="welcome-wrap">
-    <span class="welcome-icon">💌</span>
-    <div class="badge">亲密联结风格测试</div>
-    <h1 class="welcome-title">你用什么频率<br>发出爱的信号？</h1>
-    <p class="welcome-en">LOVE FREQUENCY TEST</p>
+<form id="quizForm">
 
-    <div class="welcome-card">
-      <p>
-        每个人都在爱，但爱的方式却大相径庭。<br>
-        有人用言语，有人用陪伴，有人用行动，<br>有人用细节，有人用触碰。<br><br>
-        这套测试没有"正确答案"——<br>只有<strong>最适合你的那个频率</strong>。<br><br>
-        完成10道题，发现你在亲密关系中<br>最自然的爱与被爱的方式。
-      </p>
-      <div class="type-pills">
-        <span class="type-pill">🌸 语言共鸣型</span>
-        <span class="type-pill">🕯 时刻共享型</span>
-        <span class="type-pill">🧺 行动守护型</span>
-        <span class="type-pill">🎀 用心仪式型</span>
-        <span class="type-pill">💞 亲密触感型</span>
-      </div>
-    </div>
+<script>
+const questions = [
+["加班到深夜回家，你最想看到的是：",
+["静静陪你坐一会儿","B"],
+["温着你爱吃的热汤面","C"],
+["手写暖心便签","D"],
+["一个紧紧的拥抱","E"]],
 
-    <button class="btn-primary" id="btn-start">开始测试</button>
-    <p class="time-note">✦ 共 10 题 · 约需 3 分钟 · 跟着直觉走 ✦</p>
-  </div>
-</div>
+["情绪突然低落，对方怎么做最能治愈你？",
+["说“我懂你的委屈”","A"],
+["推掉事情专心陪你","B"],
+["默默替你收拾好一切","C"],
+["轻轻牵手或摸头","E"]],
 
-<!-- ═══════════════════════════
-     QUIZ
-═══════════════════════════ -->
-<div class="screen" id="screen-quiz">
-  <div class="quiz-wrap">
-    <div class="progress-area">
-      <div class="progress-top">
-        <span class="q-counter">第 <em id="q-num">1</em> 题 / 10</span>
-        <span class="q-counter" style="color:var(--sage)">跟着直觉选 ✦</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </div>
-    <div class="question-card" id="question-card">
-      <span class="q-label" id="q-label">Q01</span>
-      <p class="q-text" id="q-text"></p>
-    </div>
-    <div class="options-list" id="options-list"></div>
-  </div>
-</div>
+["异地久别重逢，你最想做的是：",
+["彻夜聊天","A"],
+["窝在一起发呆","B"],
+["带你吃顿好的","C"],
+["紧紧拥抱","E"]],
 
-<!-- ═══════════════════════════
-     RESULT
-═══════════════════════════ -->
-<div class="screen" id="screen-result">
-  <div class="result-wrap">
+["哪句话最能让你瞬间被充电？",
+["你在我心里最特别","A"],
+["走，带你去想去的地方","B"],
+["这件事交给我","C"],
+["偷偷实现你的小心愿","D"]],
 
-    <div class="result-header">
-      <div class="result-emoji-row" id="r-emoji">🌸🕯</div>
-      <div class="badge">你的亲密联结风格</div>
-      <h2 class="result-title" id="r-title"></h2>
-      <p class="result-subtitle" id="r-subtitle"></p>
-    </div>
+["你心中最动人的浪漫画面是：",
+["交换只属于两人的秘密","A"],
+["替你包揽不擅长的事","C"],
+["记住你所有喜好准备惊喜","D"],
+["在人群中牵紧你的手","E"]],
 
-    <div class="result-card">
-      <div class="sec-title">🌿 核心特质</div>
-      <p class="sec-body" id="r-core"></p>
-    </div>
-    <div class="result-card">
-      <div class="sec-title">✨ 你的优势</div>
-      <p class="sec-body" id="r-strength"></p>
-    </div>
-    <div class="result-card">
-      <div class="sec-title">🌱 可能的成长点</div>
-      <p class="sec-body" id="r-growth"></p>
-    </div>
-    <div class="result-card">
-      <div class="sec-title">📊 你的五频分布</div>
-      <div id="score-bars"></div>
-    </div>
+["哪个小细节最让你心动？",
+["记得你想看的电影","B"],
+["生病时递药和热水","C"],
+["悄悄买来你提过的小东西","D"],
+["看剧时自然搂着你","E"]],
 
-    <div class="tip-card">
-      <span class="tip-icon">🔮</span>
-      <div class="tip-label">给你的心理学小贴士</div>
-      <p class="tip-text" id="r-tip"></p>
-    </div>
+["你最享受的二人时光是：",
+["深度聊天","A"],
+["一起做日常小事","B"],
+["精心策划的小约会","D"],
+["腻在一起贴贴","E"]],
 
-    <button class="btn-ghost" id="btn-retry">↺ 重新测试</button>
-    <p class="fine-print">本测试仅供趣味参考，不构成心理诊断 · 所有类型皆美好</p>
-  </div>
+["在热闹聚会场合，对方怎么做最让你安心？",
+["朋友圈晒你们的走心合照","A"],
+["目光始终在你身上","B"],
+["准备小惊喜安排","D"],
+["桌下悄悄握住你的手","E"]],
+
+["理想纪念日你最希望：",
+["写满真心话的信","A"],
+["替你处理焦虑的事","C"],
+["记得你念叨很久的东西","D"],
+["长时间亲密相处","E"]],
+
+["当你们都老了，你觉得最动人的爱是：",
+["每天依然说我爱你","A"],
+["一起晒太阳聊天","B"],
+["依然为你做饭","C"],
+["每年生日认真准备","D"]]
+];
+
+questions.forEach((q,i)=>{
+document.write(`<div class="question"><p>Q${i+1}. ${q[0]}</p>`);
+for(let j=1;j<=4;j++){
+document.write(`<label><input type="radio" name="q${i}" value="${q[j][1]}" required> ${q[j][0]}</label>`);
+}
+document.write("</div>");
+});
+</script>
+
+<button type="submit">查看我的爱的频率</button>
+</form>
+
+<div id="result" class="result"></div>
+
 </div>
 
 <script>
-(function () {
-  'use strict';
+const typeNames={
+A:"🌸 语言共鸣型",
+B:"🕯 时刻共享型",
+C:"🧺 行动守护型",
+D:"🎀 用心仪式型",
+E:"💞 亲密触感型"
+};
 
-  /* ═══════════════════════════════════════════
-     DATA
-     Types: lang | time | act | rit | touch
-     Distribution: each type appears exactly 8×
-     (10 questions × 4 opts = 40 slots ÷ 5 = 8)
-     Excluded per question:
-       Q1 →lang  Q2→rit  Q3→rit  Q4→touch Q5→time
-       Q6→lang   Q7→act  Q8→act  Q9→time  Q10→touch
-  ═══════════════════════════════════════════ */
-  var QUESTIONS = [
-    // Q1 — excludes lang
-    {
-      text: "加班到深夜回家，你最想看到：",
-      opts: [
-        { t: "rit",   s: "门上贴着夸你辛苦 + 小画的暖心便签 🎀" },
-        { t: "time",  s: "对方放下手机，过来静静陪你坐一会儿 🕯" },
-        { t: "act",   s: "锅里温着一碗你爱吃的热汤面 🧺" },
-        { t: "touch", s: "一个30秒的紧紧拥抱，像在给你充电 💞" }
-      ]
-    },
-    // Q2 — excludes rit
-    {
-      text: "情绪突然低落，对方怎么做最治愈你？",
-      opts: [
-        { t: "lang",  s: "看着你眼睛说"我懂你的委屈" 🌸" },
-        { t: "time",  s: "推掉所有事，今晚只陪着你 🕯" },
-        { t: "act",   s: "默默把家里的乱七八糟都收拾好 🧺" },
-        { t: "touch", s: "牵你的手，或轻轻摸摸你的头 💞" }
-      ]
-    },
-    // Q3 — excludes rit
-    {
-      text: "异地久别重逢，第一件事你最想：",
-      opts: [
-        { t: "lang",  s: "彻夜聊天，把分开时的所有细节都讲一遍 🌸" },
-        { t: "time",  s: "哪里都不去，就窝在一起发呆也开心 🕯" },
-        { t: "act",   s: "对方接过你重重的行李，带你去吃顿好的 🧺" },
-        { t: "touch", s: "直接扑过去紧紧抱住，感受对方的心跳 💞" }
-      ]
-    },
-    // Q4 — excludes touch
-    {
-      text: "哪句话/哪件事瞬间让你觉得"被充满电"？",
-      opts: [
-        { t: "lang", s: ""你在我心里永远是最特别的" 🌸" },
-        { t: "time", s: ""走，我们一起去那个你一直想去的地方" 🕯" },
-        { t: "act",  s: ""这件事交给我，别担心" 🧺" },
-        { t: "rit",  s: ""我偷偷帮你实现了你提过的那个心愿，今晚见" 🎀" }
-      ]
-    },
-    // Q5 — excludes time
-    {
-      text: "你心目中的浪漫画面是：",
-      opts: [
-        { t: "lang",  s: "深夜枕边分享彼此的小秘密 🌸" },
-        { t: "act",   s: "对方把你所有不擅长的事都提前包揽好 🧺" },
-        { t: "rit",   s: "对方偷偷记下你所有小喜好，某天给你一个惊喜 🎀" },
-        { t: "touch", s: "在人多的地方，他自然地牵紧你的手 💞" }
-      ]
-    },
-    // Q6 — excludes lang
-    {
-      text: "对方做的哪件小事最让你心动？",
-      opts: [
-        { t: "rit",   s: "突然送来一个你随口提过、他一直悄悄记着的小东西 🎀" },
-        { t: "time",  s: "记得你提过想看的电影，特意约你一起去 🕯" },
-        { t: "act",   s: "你一感冒，他立刻把药和热水递到手边 🧺" },
-        { t: "touch", s: "看剧时自然地搂着你，整个人贴过来 💞" }
-      ]
-    },
-    // Q7 — excludes act
-    {
-      text: "你最享受的二人时光模式是：",
-      opts: [
-        { t: "lang",  s: "深度聊天，想法碰撞火花四溅 🌸" },
-        { t: "time",  s: "一起做一件事，比如拼图、散步、长途开车 🕯" },
-        { t: "rit",   s: "对方为你准备一个充满仪式感的小惊喜 🎀" },
-        { t: "touch", s: "腻在一起，皮肤贴皮肤，超级安心 💞" }
-      ]
-    },
-    // Q8 — excludes act
-    {
-      text: "在热闹的聚会场合，对方怎么做最让你安心？",
-      opts: [
-        { t: "lang",  s: "发朋友圈秀合照，还配上走心小作文 🌸" },
-        { t: "time",  s: "人群里他的眼神和注意力一直在你身上 🕯" },
-        { t: "rit",   s: "提前帮你备好今晚需要的小物，一句话没说就递给你 🎀" },
-        { t: "touch", s: "桌子底下悄悄握住你的手 💞" }
-      ]
-    },
-    // Q9 — excludes time
-    {
-      text: "理想的纪念日礼物是：",
-      opts: [
-        { t: "lang",  s: "一封写满真心话的手写信 🌸" },
-        { t: "act",   s: "把你一直拖着没做的那件杂事，悄悄替你搞定了 🧺" },
-        { t: "rit",   s: "你念叨很久、他偷偷买回来的实用好物 🎀" },
-        { t: "touch", s: "一次慢节奏的、亲密无间的长相处 💞" }
-      ]
-    },
-    // Q10 — excludes touch
-    {
-      text: "当你们老了，你觉得爱最动人的样子是：",
-      opts: [
-        { t: "lang", s: "每天依然会对彼此说"我爱你" 🌸" },
-        { t: "time", s: "还能一起坐在阳台上晒太阳、聊天 🕯" },
-        { t: "act",  s: "他依然记得你爱吃的口味，给你做饭 🧺" },
-        { t: "rit",  s: "每年你的生日，他依然认真准备，从不说"算了吧" 🎀" }
-      ]
-    }
-  ];
+document.getElementById("quizForm").addEventListener("submit",function(e){
+e.preventDefault();
 
-  /* ─── Type meta ─── */
-  var TYPES = {
-    lang:  { name:"语言共鸣型", emoji:"🌸", color:"#c9816a" },
-    time:  { name:"时刻共享型", emoji:"🕯",  color:"#c4a070" },
-    act:   { name:"行动守护型", emoji:"🧺", color:"#7fa090" },
-    rit:   { name:"用心仪式型", emoji:"🎀", color:"#a08ab0" },
-    touch: { name:"亲密触感型", emoji:"💞", color:"#d07880" }
-  };
+let scores={A:0,B:0,C:0,D:0,E:0};
 
-  /* ─── Result content ─── */
-  function buildResult(pri, sec) {
-    var pn = TYPES[pri].name, sn = TYPES[sec].name;
-    var pe = TYPES[pri].emoji, se = TYPES[sec].emoji;
+for(let i=0;i<questions.length;i++){
+let val=document.querySelector(`input[name="q${i}"]:checked`).value;
+scores[val]++;
+}
 
-    var cores = {
-      lang:  "你是亲密关系里的诗人。相信语言是灵魂之间最短的桥梁，对你来说"说出口"不是多余，而是必要。你通过表达与被表达感受到爱的温度，一句真心话，胜过十件沉默的事。",
-      time:  "你认为爱不是说出来的，而是"在一起"本身。不需要特别的仪式，只要对方真实地出现在你身边。共处的时光是你感受爱最直接的方式——质量胜于数量，专注胜于形式。",
-      act:   "你的爱藏在每一个"我来吧"里。你不擅长华丽的表白，却会在对方最需要时悄悄出现、悄悄搞定。你用双手和行动诠释承诺，让对方感受到真实、可依赖的安全感。",
-      rit:   "你相信细节是爱最真实的证据。重要的日子刻在你心里，那些"只属于我们"的小仪式，是你确认关系温度的方式。你把关系经营得像一部精心编排的电影，每一帧都有用心。",
-      touch: "对你来说，肌肤的接触是最直接的情感语言。一个拥抱胜过千言万语，靠近本身就是安全感。你通过身体语言传递"我在这里，我不会走"的信号，让爱变得具体而真实。"
-    };
+let sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+let main=sorted[0][0];
+let sub=sorted[1][0];
 
-    var strengths = {
-      lang:  "你善于表达情感，能让伴侣清晰地感受到你的爱意。你在关系中创造了"情感的透明度"，误解往往在你这里无处安家。你也是最懂得用语言给对方打气的人，一段话，就能让对方觉得被看见。✨",
-      time:  "你的高质量陪伴能力超强，"在场"本身就是你最大的礼物。你能创造深度的情感连接，让对方在人群中感受到被优先、被重视。你的存在，本身就是一种稳定而温暖的力量。✨",
-      act:   "你是关系里的"定海神针"——可靠、踏实、说到做到。对方在你身边有强烈的安全感，因为他们知道，无论发生什么，你都会在。你用行动，证明了比任何誓言都有力的东西。✨",
-      rit:   "你让关系充满温度和仪式感，给对方留下独特的情感记忆。你往往是那个"最懂我"的人。你的用心会在未来某个不经意的时刻，成为对方这辈子最珍贵的回忆之一。✨",
-      touch: "你在亲密关系中创造强烈的身体联结感，让伴侣感到被接纳和被需要。你的靠近传递着无条件的接纳，这是很多人一生都在寻找的安全港湾。✨"
-    };
-
-    var growths = {
-      lang:  "副频是" + sn + "的你，偶尔可能因为对方"说得不够多"而感到失落。试着读懂沉默背后的语言——沉默有时是另一种深情，只是频道不同，并非冷漠。",
-      time:  "副频是" + sn + "的你，留意区分"物理在场"和"情感在场"。对方可能正在用你不太擅长感知的方式爱着你——试着主动探索他的语言，而不只等待他切换到你的频道。",
-      act:   "副频是" + sn + "的你，记得偶尔也"开口说爱"。行动再多，有时对方也需要听到那句话。让你内心的柔软，找到言语的出口——接受对方的语言，也是一种勇气。",
-      rit:   "副频是" + sn + "的你，不是所有人都对仪式有同等的敏感度。当对方忘记某个纪念日，试着先理解，再温柔表达你的需求——你的期待是合理的，用"我"开头表达它，比用"你总是忘"更有效。",
-      touch: "副频是" + sn + "的你，记得尊重不同人对身体边界的感受节奏。不是所有人都通过肢体语言接收爱的信号——了解对方的频道，本身就是一种细腻的爱。"
-    };
-
-    var tips = {
-      lang:  "爱的语言有很多种，而你精通其中最古老的一种——语言。心理学研究发现，伴侣间真正有效的情感沟通（不是讨论家务，而是"我感受到……"式的自我表露）能显著提升关系满意度。如果你的伴侣不像你一样善于言辞，不妨把你想听的话，先勇敢地说给他听。",
-      time:  "依恋理论告诉我们，真正的陪伴不是"在场"，而是"同频"。你天然理解这一点。给自己的功课是：当你渴望陪伴时，试着说出来，而不是等待对方猜到。你值得被主动看见。",
-      act:   "你是"服务型爱人"的典范。心理学上，这种模式有时来自一个深层信念："做到，才值得被爱"。温柔地问问自己——你愿意为对方做一切，那你愿意让对方也为你做些什么吗？接受，有时候也是一种勇气。",
-      rit:   "仪式感的背后，是心理学家所说的"关系叙事"——你在用细节编织一个"我们的故事"。这是非常珍贵的能力。记住：仪式感不等于完美，一张真诚的便签，有时比一场精心策划的晚宴更有力量。",
-      touch: "皮肤是人体最大的感觉器官，触碰会促进催产素（"爱的激素"）分泌——这是你本能地追求靠近的科学根据。同时，记得让拥抱和语言一起到达对方，信号会更完整，也更容易被不同频道的人接收到。"
-    };
-
-    return {
-      emojis:   pe + " " + se,
-      title:    pn.replace("型","") + " × " + sn,
-      subtitle: "主频：" + pe + " " + pn + "　副频：" + se + " " + sn,
-      core:     cores[pri],
-      strength: strengths[pri],
-      growth:   growths[pri],
-      tip:      tips[pri]
-    };
-  }
-
-  /* ═══════════════════════════════════════════
-     STATE
-  ═══════════════════════════════════════════ */
-  var state = {
-    qIndex: 0,
-    scores: { lang:0, time:0, act:0, rit:0, touch:0 },
-    locked: false
-  };
-
-  /* ═══════════════════════════════════════════
-     HELPERS
-  ═══════════════════════════════════════════ */
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(function(el){
-      el.classList.remove('active');
-    });
-    var el = document.getElementById('screen-' + id);
-    el.classList.add('active');
-    // Reset animation
-    el.style.animation = 'none';
-    el.offsetHeight; // reflow
-    el.style.animation = '';
-    window.scrollTo(0, 0);
-  }
-
-  function $(id){ return document.getElementById(id); }
-
-  /* ═══════════════════════════════════════════
-     RENDER QUESTION
-  ═══════════════════════════════════════════ */
-  function renderQuestion() {
-    state.locked = false;
-    var q = QUESTIONS[state.qIndex];
-    var n = state.qIndex + 1;
-
-    $('q-num').textContent = n;
-    $('q-label').textContent = 'Q' + (n < 10 ? '0' + n : n);
-    $('q-text').textContent  = q.text;
-    $('progress-fill').style.width = ((state.qIndex / QUESTIONS.length) * 100) + '%';
-
-    // Re-animate card
-    var card = $('question-card');
-    card.style.animation = 'none';
-    card.offsetHeight;
-    card.style.animation = 'slideCardIn .42s cubic-bezier(.34,1.5,.64,1) both';
-
-    var list = $('options-list');
-    list.innerHTML = '';
-    var letters = ['A','B','C','D'];
-
-    q.opts.forEach(function(opt, i){
-      var btn = document.createElement('button');
-      btn.className = 'opt-btn';
-      btn.setAttribute('type', 'button');
-      btn.innerHTML =
-        '<span class="opt-letter">' + letters[i] + '</span>' +
-        '<span>' + opt.s + '</span>';
-
-      btn.addEventListener('click', function(){
-        if (state.locked) return;
-        state.locked = true;
-
-        // Visual select
-        list.querySelectorAll('.opt-btn').forEach(function(b){ b.classList.remove('selected'); });
-        btn.classList.add('selected');
-
-        // Score
-        state.scores[opt.t]++;
-
-        // Advance
-        setTimeout(function(){
-          state.qIndex++;
-          if (state.qIndex < QUESTIONS.length) {
-            renderQuestion();
-          } else {
-            showResults();
-          }
-        }, 380);
-      });
-
-      list.appendChild(btn);
-    });
-  }
-
-  /* ═══════════════════════════════════════════
-     SHOW RESULTS
-  ═══════════════════════════════════════════ */
-  function showResults() {
-    var sorted = Object.keys(state.scores).sort(function(a,b){
-      return state.scores[b] - state.scores[a];
-    });
-    var pri = sorted[0], sec = sorted[1];
-    var R   = buildResult(pri, sec);
-
-    $('r-emoji').textContent    = R.emojis;
-    $('r-title').textContent    = R.title;
-    $('r-subtitle').textContent = R.subtitle;
-    $('r-core').textContent     = R.core;
-    $('r-strength').textContent = R.strength;
-    $('r-growth').textContent   = R.growth;
-    $('r-tip').textContent      = R.tip;
-
-    // Score bars
-    var barsEl = $('score-bars');
-    barsEl.innerHTML = '';
-    var typeOrder = ['lang','time','act','rit','touch'];
-    var total     = QUESTIONS.length;
-
-    typeOrder.forEach(function(key){
-      var info = TYPES[key];
-      var val  = state.scores[key];
-      var pct  = Math.round((val / total) * 100);
-      var row  = document.createElement('div');
-      row.className = 'bar-row';
-      row.innerHTML =
-        '<div class="bar-top">' +
-          '<span>' + info.emoji + ' ' + info.name + '</span>' +
-          '<span style="color:var(--text-light)">' + val + ' / ' + total + '</span>' +
-        '</div>' +
-        '<div class="bar-track">' +
-          '<div class="bar-fill" style="background:' + info.color + '90" data-pct="' + pct + '"></div>' +
-        '</div>';
-      barsEl.appendChild(row);
-    });
-
-    showScreen('result');
-
-    // Animate bars after paint
-    requestAnimationFrame(function(){
-      setTimeout(function(){
-        document.querySelectorAll('.bar-fill').forEach(function(el){
-          el.style.width = el.getAttribute('data-pct') + '%';
-        });
-      }, 200);
-    });
-  }
-
-  /* ═══════════════════════════════════════════
-     INIT
-  ═══════════════════════════════════════════ */
-  function startQuiz() {
-    state.qIndex = 0;
-    state.scores = { lang:0, time:0, act:0, rit:0, touch:0 };
-    showScreen('quiz');
-    renderQuestion();
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    $('btn-start').addEventListener('click', startQuiz);
-    $('btn-retry').addEventListener('click', startQuiz);
-  });
-
-})();
+document.getElementById("result").style.display="block";
+document.getElementById("result").innerHTML=`
+<div class="card">
+<h2>${typeNames[main]} × ${typeNames[sub]}</h2>
+<p>你的爱，更像一种独特的频率组合。你通过 <strong>${typeNames[main]}</strong> 的方式建立连接，同时也会在 <strong>${typeNames[sub]}</strong> 的时刻感到格外安心。</p>
+<div class="tag">🌿 爱不是完美匹配，而是互相翻译。</div>
+<div class="footer">截图保存，和TA对照看看吧 💖</div>
+</div>
+`;
+});
 </script>
+
 </body>
 </html>
