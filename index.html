@@ -1,448 +1,895 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>爱的频率测试</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爱的频率 · 亲密联结风格测试</title>
+<meta name="description" content="10道题，发现你在亲密关系中最自然的爱与被爱的方式。没有对错，只有属于你的频率。">
+<meta property="og:title" content="爱的频率 · 亲密联结风格测试">
+<meta property="og:description" content="10道题，发现你在亲密关系中最自然的爱与被爱的方式。没有对错，只有属于你的频率。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爱的频率 · 亲密联结风格测试">
+<meta name="twitter:description" content="10道题，发现你在亲密关系中最自然的爱与被爱的方式。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 <style>
-
-*{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
-background:linear-gradient(140deg,#f7ebe7,#f2f0ef);
-color:#463933;
+/* ── Root Variables ── */
+:root {
+  --c-bg:       #fdf7f0;
+  --c-cream:    #faf3ea;
+  --c-rose:     #c47e6a;
+  --c-rose-d:   #a56352;
+  --c-gold:     #c09a6a;
+  --c-sage:     #7a9e8e;
+  --c-lavender: #9a86aa;
+  --c-blush:    #f0e0d6;
+  --c-text:     #352018;
+  --c-mid:      #7a5448;
+  --c-light:    #b08878;
+  --c-muted:    #c8b0a8;
+  --card:       rgba(255,255,255,0.80);
+  --card-b:     rgba(255,255,255,0.96);
+  --shadow:     0 8px 40px rgba(150,80,60,0.10);
+  --shadow-sm:  0 3px 16px rgba(150,80,60,0.08);
+  --radius-xl:  28px;
+  --radius-lg:  20px;
+  --radius-md:  14px;
 }
 
-.container{
-max-width:760px;
-margin:auto;
-padding:40px 20px 80px;
+/* ── Reset & Base ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
+  background:var(--c-bg);
+  color:var(--c-text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
 }
 
-.card{
-background:white;
-border-radius:26px;
-padding:36px;
-box-shadow:0 25px 80px rgba(0,0,0,0.08);
-animation:fade .35s ease;
+/* ── Background atmosphere ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 8% 12%, rgba(196,126,106,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(122,158,142,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(192,154,106,0.06) 0%, transparent 70%);
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(8px)}
-to{opacity:1}
+/* ── Floating decorations ── */
+.deco {
+  position:fixed; z-index:0; pointer-events:none;
+  opacity:0.28; font-size:80px; line-height:1;
+  animation:floatDeco 8s ease-in-out infinite;
+}
+.deco-1 { top:5%; right:3%; animation-delay:0s; }
+.deco-2 { bottom:8%; left:2%; font-size:60px; animation-delay:-4s; animation-direction:reverse; }
+
+@keyframes floatDeco {
+  0%,100% { transform:translateY(0) rotate(-5deg); }
+  50%      { transform:translateY(-14px) rotate(5deg); }
 }
 
-h1{
-font-size:34px;
-text-align:center;
-margin-bottom:6px;
+/* ── Screens ── */
+.screen {
+  position:relative; z-index:1;
+  display:none;
+  min-height:100vh;
+  padding:48px 20px 72px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.screen.active { display:flex; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(26px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes scaleIn {
+  from { opacity:0; transform:scale(0.92); }
+  to   { opacity:1; transform:scale(1); }
 }
 
-.subtitle{
-text-align:center;
-color:#9c8478;
-margin-bottom:26px;
+/* ════════════════════════════
+   WELCOME SCREEN
+════════════════════════════ */
+#screen-welcome .wrap {
+  max-width:480px; width:100%; text-align:center;
+  animation:fadeUp 0.7s ease both;
 }
 
-.types{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-margin-bottom:28px;
+.welcome-icon {
+  font-size:56px; display:block; margin-bottom:16px;
+  animation:floatDeco 3.5s ease-in-out infinite;
 }
 
-.type{
-background:#faf7f6;
-border-radius:12px;
-padding:14px;
-text-align:center;
-font-size:14px;
+.pill {
+  display:inline-block;
+  background:linear-gradient(130deg, var(--c-rose) 0%, var(--c-gold) 100%);
+  color:#fff; font-size:10.5px; letter-spacing:3px; font-weight:600;
+  padding:5px 18px; border-radius:30px; margin-bottom:22px;
 }
 
-.start{
-display:block;
-margin:auto;
-padding:16px 32px;
-border-radius:16px;
-border:none;
-background:#c98f6f;
-color:white;
-font-size:18px;
-cursor:pointer;
+.welcome-title {
+  font-family:'Ma Shan Zheng', 'Songti SC', cursive;
+  font-size:44px; line-height:1.22; color:var(--c-text);
+  margin-bottom:6px;
 }
 
-.progress{
-height:8px;
-background:#eee;
-border-radius:8px;
-margin-bottom:24px;
-overflow:hidden;
+.welcome-en {
+  font-size:11px; letter-spacing:5px; color:var(--c-muted);
+  margin-bottom:32px; text-transform:uppercase;
 }
 
-.bar{
-height:100%;
-background:#c98f6f;
-width:0%;
-transition:.3s;
+.info-card {
+  background:var(--card);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.92);
+  border-radius:var(--radius-xl);
+  padding:30px 32px;
+  box-shadow:var(--shadow);
+  margin-bottom:30px;
+  text-align:left;
 }
 
-.question{
-font-size:22px;
-margin-bottom:18px;
+.info-card p {
+  font-size:14px; line-height:2.1; color:var(--c-mid);
+}
+.info-card strong { color:var(--c-rose); }
+
+.type-row {
+  display:flex; flex-wrap:wrap; gap:8px;
+  margin-top:22px; justify-content:center;
+}
+.type-chip {
+  background:linear-gradient(130deg, rgba(240,224,214,0.85), rgba(196,210,200,0.65));
+  border:1px solid rgba(196,126,106,0.20);
+  border-radius:30px; padding:6px 14px;
+  font-size:12px; color:var(--c-mid);
 }
 
-.option{
-border:1px solid #eee;
-border-radius:12px;
-padding:16px;
-margin-bottom:12px;
-cursor:pointer;
-transition:.2s;
+.btn {
+  display:inline-block; cursor:pointer; border:none;
+  font-family:'Noto Serif SC', serif; letter-spacing:1px;
+  transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+}
+.btn:active { transform:scale(0.97) !important; }
+
+.btn-fill {
+  background:linear-gradient(130deg, var(--c-rose) 0%, var(--c-gold) 100%);
+  color:#fff; font-size:16px; padding:16px 52px;
+  border-radius:50px;
+  box-shadow:0 8px 28px rgba(196,126,106,0.38);
+}
+.btn-fill:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(196,126,106,0.48); }
+
+.btn-ghost {
+  background:transparent;
+  border:1.5px solid rgba(196,126,106,0.36);
+  color:var(--c-rose); font-size:14px;
+  padding:14px 32px; border-radius:50px;
+  display:block; width:100%; text-align:center;
+}
+.btn-ghost:hover { background:rgba(196,126,106,0.07); border-color:var(--c-rose); }
+
+.btn-share {
+  background:linear-gradient(130deg, var(--c-sage) 0%, #a0c0b0 100%);
+  color:#fff; font-size:14px;
+  padding:14px 32px; border-radius:50px;
+  display:block; width:100%; text-align:center; margin-bottom:12px;
+  box-shadow:0 4px 16px rgba(122,158,142,0.30);
+}
+.btn-share:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(122,158,142,0.38); }
+
+.start-note {
+  font-size:11.5px; color:var(--c-muted); margin-top:16px; letter-spacing:1px;
 }
 
-.option:hover{
-background:#faf7f6;
-transform:scale(1.01);
+/* ════════════════════════════
+   QUIZ SCREEN
+════════════════════════════ */
+#screen-quiz .wrap {
+  max-width:560px; width:100%;
 }
 
-.nav{
-display:flex;
-justify-content:space-between;
-margin-top:18px;
+.progress-area { margin-bottom:28px; animation:fadeUp 0.4s ease both; }
+
+.progress-top {
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom:10px;
+}
+.q-label-small {
+  font-size:12px; color:var(--c-light); letter-spacing:1.5px;
+}
+.q-label-small em {
+  color:var(--c-rose); font-style:normal;
+  font-size:18px; font-weight:600;
+}
+.q-hint { font-size:11.5px; color:var(--c-sage); letter-spacing:1px; }
+
+.progress-track {
+  height:3px; background:rgba(196,126,106,0.12); border-radius:3px; overflow:hidden;
+}
+.progress-bar {
+  height:100%;
+  background:linear-gradient(90deg, var(--c-rose), var(--c-gold));
+  border-radius:3px;
+  transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width:0%;
 }
 
-.nav button{
-background:#eee;
-border:none;
-padding:10px 16px;
-border-radius:10px;
-cursor:pointer;
+.q-card {
+  background:var(--card-b);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.95);
+  border-radius:var(--radius-xl);
+  padding:36px 34px 28px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+  animation:cardIn 0.42s cubic-bezier(0.34,1.5,0.64,1) both;
 }
 
-.result-title{
-text-align:center;
-font-size:28px;
-margin-bottom:16px;
+.q-num {
+  font-size:10.5px; letter-spacing:3px; color:var(--c-rose);
+  margin-bottom:12px; display:block;
+}
+.q-text {
+  font-size:18px; line-height:1.75; color:var(--c-text);
+  font-weight:500;
 }
 
-.section{
-margin-top:24px;
-line-height:1.85;
-white-space:pre-line;
+.options { display:flex; flex-direction:column; gap:11px; }
+
+.opt {
+  display:flex; align-items:flex-start; gap:12px;
+  background:rgba(255,255,255,0.68);
+  border:1.5px solid rgba(196,126,106,0.16);
+  border-radius:var(--radius-md);
+  padding:15px 18px;
+  cursor:pointer;
+  font-family:'Noto Serif SC', serif;
+  font-size:14px; color:var(--c-mid);
+  text-align:left; line-height:1.70;
+  transition:border-color .20s, transform .20s, background .20s, box-shadow .20s;
+  position:relative; overflow:hidden;
+}
+.opt:hover {
+  border-color:rgba(196,126,106,0.42);
+  transform:translateX(5px);
+  color:var(--c-text);
+  background:rgba(250,244,238,0.88);
+}
+.opt.selected {
+  border-color:var(--c-rose);
+  background:linear-gradient(130deg, rgba(240,220,210,0.96), rgba(252,246,240,0.94));
+  color:var(--c-text);
+  transform:translateX(7px);
+  box-shadow:0 4px 18px rgba(196,126,106,0.17);
+}
+.opt-letter {
+  flex-shrink:0;
+  width:26px; height:26px; margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(196,126,106,0.12);
+  border-radius:50%;
+  font-size:11px; font-weight:700; color:var(--c-rose);
+  transition:background .20s, color .20s;
+}
+.opt.selected .opt-letter { background:var(--c-rose); color:#fff; }
+.opt-text { flex:1; }
+
+/* ════════════════════════════
+   RESULT SCREEN
+════════════════════════════ */
+#screen-result .wrap {
+  max-width:560px; width:100%;
+  animation:fadeUp 0.7s ease both;
 }
 
-.decor{
-position:fixed;
-font-size:26px;
-opacity:.12;
-pointer-events:none;
+.result-hero { text-align:center; margin-bottom:28px; }
+.result-emojis { font-size:44px; letter-spacing:10px; margin-bottom:10px; display:block; }
+.result-type-name {
+  font-family:'Ma Shan Zheng', 'Songti SC', cursive;
+  font-size:34px; color:var(--c-text); line-height:1.3; margin-bottom:5px;
+}
+.result-type-sub { font-size:12.5px; color:var(--c-muted); letter-spacing:1px; }
+
+.r-card {
+  background:var(--card-b);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.95);
+  border-radius:var(--radius-xl);
+  padding:28px 30px;
+  box-shadow:var(--shadow-sm);
+  margin-bottom:14px;
+  animation:scaleIn 0.5s ease both;
 }
 
-.d1{top:80px;left:60px}
-.d2{top:200px;right:60px}
-.d3{bottom:120px;left:80px}
-.d4{bottom:200px;right:40px}
+.r-section-title {
+  font-size:10.5px; letter-spacing:2.5px; color:var(--c-rose);
+  display:flex; align-items:center; gap:8px; margin-bottom:14px;
+}
+.r-section-title::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg, rgba(196,126,106,0.25), transparent);
+}
 
+.r-body { font-size:14px; line-height:2.10; color:var(--c-mid); }
+
+/* combo callout */
+.combo-card {
+  background:linear-gradient(130deg, rgba(240,225,215,0.90), rgba(196,212,204,0.60));
+  border:1px solid rgba(196,126,106,0.18);
+  border-radius:var(--radius-lg);
+  padding:22px 26px; margin-bottom:14px;
+  text-align:center;
+  animation:scaleIn 0.55s ease both;
+}
+.combo-text { font-size:14.5px; line-height:1.95; color:var(--c-mid); font-style:italic; }
+
+/* score bars */
+.bar-row { margin-bottom:13px; }
+.bar-row:last-child { margin-bottom:0; }
+.bar-label {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:13px; color:var(--c-mid); margin-bottom:6px;
+}
+.bar-count { font-size:12px; color:var(--c-muted); }
+.bar-track {
+  height:8px; background:rgba(196,126,106,0.08); border-radius:8px; overflow:hidden;
+}
+.bar-fill {
+  height:100%; border-radius:8px; width:0%;
+  transition:width 1.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* tip card */
+.tip-card {
+  background:linear-gradient(130deg, rgba(240,226,216,0.90), rgba(194,212,204,0.55));
+  border:1px solid rgba(196,126,106,0.16);
+  border-radius:var(--radius-xl);
+  padding:26px 30px; margin-bottom:22px;
+  animation:scaleIn 0.6s ease both;
+}
+.tip-icon { font-size:30px; display:block; margin-bottom:8px; }
+.tip-label { font-size:10px; letter-spacing:3px; color:var(--c-sage); margin-bottom:12px; }
+.tip-text { font-size:13.5px; line-height:2.05; color:var(--c-mid); font-style:italic; }
+
+.actions { display:flex; flex-direction:column; gap:0; }
+
+.fine-print {
+  text-align:center; font-size:11px;
+  color:var(--c-muted); letter-spacing:1px; margin-top:16px;
+}
+
+/* ── Responsive ── */
+@media(max-width:480px){
+  .welcome-title { font-size:34px; }
+  .result-type-name { font-size:28px; }
+  .q-card { padding:26px 20px 22px; }
+  .r-card { padding:22px 22px; }
+  .q-text { font-size:16px; }
+  .opt { font-size:13px; padding:13px 15px; }
+  .btn-fill { font-size:15px; padding:15px 40px; }
+  .deco { display:none; }
+}
+@media(min-width:768px){
+  .opt:hover { transform:translateX(6px); }
+}
 </style>
 </head>
-
 <body>
 
-<div class="decor d1">🌸</div>
-<div class="decor d2">💗</div>
-<div class="decor d3">✨</div>
-<div class="decor d4">🎀</div>
+<!-- Floating decorations -->
+<div class="deco deco-1" aria-hidden="true">🌸</div>
+<div class="deco deco-2" aria-hidden="true">🕯️</div>
 
-<div class="container">
+<!-- ════════════════════════════
+     WELCOME SCREEN
+════════════════════════════ -->
+<div id="screen-welcome" class="screen active" role="main">
+  <div class="wrap">
+    <span class="welcome-icon" aria-hidden="true">💌</span>
+    <div class="pill">亲密联结风格测试</div>
+    <h1 class="welcome-title">你用什么频率<br>发出爱的信号？</h1>
+    <p class="welcome-en">Love Frequency Test</p>
 
-<!-- START -->
+    <div class="info-card">
+      <p>
+        每个人都在爱，但爱的方式却大相径庭。<br>
+        有人用言语，有人用陪伴，有人用行动，<br>
+        有人用细节，有人用触碰。<br><br>
+        这套测试没有"正确答案"——<br>
+        只有<strong>最适合你的那个频率</strong>。<br><br>
+        完成10道题，发现你在亲密关系中<br>
+        最自然的爱与被爱的方式。
+      </p>
+      <div class="type-row" aria-label="五种类型">
+        <span class="type-chip">🌸 语言共鸣型</span>
+        <span class="type-chip">🕯 时刻共享型</span>
+        <span class="type-chip">🧺 行动守护型</span>
+        <span class="type-chip">🎀 用心仪式型</span>
+        <span class="type-chip">💞 亲密触感型</span>
+      </div>
+    </div>
 
-<div id="start">
-
-<div class="card">
-
-<h1>你用什么频率<br>发出爱的信号？</h1>
-
-<div class="subtitle">LOVE FREQUENCY TEST</div>
-
-<div class="types">
-<div class="type">🌸语言共鸣型</div>
-<div class="type">🕯时刻共享型</div>
-<div class="type">🧺行动守护型</div>
-<div class="type">🎀用心仪式型</div>
-<div class="type">💞亲密触感型</div>
+    <button class="btn btn-fill" id="btn-start">开 始 测 试</button>
+    <p class="start-note">✦ 共 10 题 · 约需 3 分钟 · 跟着直觉走 ✦</p>
+  </div>
 </div>
 
-<p style="text-align:center;margin-bottom:28px">
-完成10道题，看看你在亲密关系中的爱的频率。
-</p>
+<!-- ════════════════════════════
+     QUIZ SCREEN
+════════════════════════════ -->
+<div id="screen-quiz" class="screen" role="main">
+  <div class="wrap">
+    <div class="progress-area">
+      <div class="progress-top">
+        <span class="q-label-small">第 <em id="q-num">1</em> 题 / 10</span>
+        <span class="q-hint">跟着直觉选 ✦</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="10">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
 
-<button class="start" onclick="startTest()">开始测试</button>
+    <div class="q-card" id="q-card">
+      <span class="q-num" id="q-num-label">Q01</span>
+      <p class="q-text" id="q-text"></p>
+    </div>
 
+    <div class="options" id="options" role="group" aria-label="选项"></div>
+  </div>
 </div>
 
-</div>
+<!-- ════════════════════════════
+     RESULT SCREEN
+════════════════════════════ -->
+<div id="screen-result" class="screen" role="main">
+  <div class="wrap">
 
-<!-- QUIZ -->
+    <div class="result-hero">
+      <span class="result-emojis" id="r-emojis">🌸🕯</span>
+      <div class="pill">你的亲密联结风格</div>
+      <h2 class="result-type-name" id="r-title"></h2>
+      <p class="result-type-sub" id="r-sub"></p>
+    </div>
 
-<div id="quiz" style="display:none">
+    <div class="r-card">
+      <div class="r-section-title">🌿 核心特质</div>
+      <p class="r-body" id="r-core"></p>
+    </div>
 
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
+    <div class="r-card">
+      <div class="r-section-title">✨ 你的优势</div>
+      <p class="r-body" id="r-strength"></p>
+    </div>
 
-<div class="card">
+    <div class="r-card">
+      <div class="r-section-title">🌱 可能的成长点</div>
+      <p class="r-body" id="r-growth"></p>
+    </div>
 
-<div class="question" id="q"></div>
+    <div class="combo-card" id="combo-card">
+      <p class="combo-text" id="r-combo"></p>
+    </div>
 
-<div id="options"></div>
+    <div class="r-card">
+      <div class="r-section-title">📊 你的五频分布</div>
+      <div id="score-bars"></div>
+    </div>
 
-<div class="nav">
+    <div class="tip-card">
+      <span class="tip-icon">🔮</span>
+      <div class="tip-label">给你的心理学小贴士</div>
+      <p class="tip-text" id="r-tip"></p>
+    </div>
 
-<button onclick="prev()">上一题</button>
+    <div class="actions">
+      <button class="btn btn-share" id="btn-share">🔗 分享给朋友测一测</button>
+      <button class="btn btn-ghost" id="btn-retry">↺ 重新测试</button>
+    </div>
+    <p class="fine-print">本测试仅供趣味参考，不构成心理诊断 · 所有类型皆美好</p>
 
-<div id="index"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- RESULT -->
-
-<div id="result" style="display:none">
-
-<div class="card">
-
-<div class="result-title" id="title"></div>
-
-<div class="section" id="combo"></div>
-
-<div class="section" id="main"></div>
-
-<div class="section" id="sub"></div>
-
-<div class="section" style="text-align:center;color:#999;margin-top:30px">
-截图分享给TA看看吧 💖
-</div>
-
-</div>
-
-</div>
-
+  </div>
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
 
-let current=0
-let answers=[]
-let score={A:0,B:0,C:0,D:0,E:0}
+  /* ══════════════════════════════════════════════
+     QUESTION DATA
+     Distribution: each of 5 types appears exactly 8×
+     (10 questions × 4 opts = 40 slots ÷ 5 types = 8 each)
 
-const types={
-A:"🌸语言共鸣型",
-B:"🕯时刻共享型",
-C:"🧺行动守护型",
-D:"🎀用心仪式型",
-E:"💞亲密触感型"
-}
+     Q1  → excludes: lang
+     Q2  → excludes: rit
+     Q3  → excludes: rit
+     Q4  → excludes: touch
+     Q5  → excludes: time
+     Q6  → excludes: lang
+     Q7  → excludes: act
+     Q8  → excludes: act
+     Q9  → excludes: time
+     Q10 → excludes: touch
+  ══════════════════════════════════════════════ */
+  var QUESTIONS = [
+    {
+      text: "加班到深夜回家，你最想看到的是：",
+      opts: [
+        { t:"time",  s:"对方放下手机，过来静静陪你坐一会儿" },
+        { t:"act",   s:"锅里温着一碗专门给你留的热汤面" },
+        { t:"rit",   s:"门上贴着一张写满暖心话的手绘小便签" },
+        { t:"touch", s:"一个结结实实的长拥抱，像是给你充满了电" }
+      ]
+    },
+    {
+      text: "情绪突然很低落，对方怎么做最能治愈你？",
+      opts: [
+        { t:"lang",  s:"看着你眼睛轻声说："我懂你，你不是一个人"" },
+        { t:"time",  s:"推掉当晚所有的安排，今晚只陪着你" },
+        { t:"act",   s:"默默把你一直没动的家务和待办事项都处理掉" },
+        { t:"touch", s:"牵起你的手，或者轻轻摸摸你的头" }
+      ]
+    },
+    {
+      text: "异地久别重逢，第一件事你最想做的是：",
+      opts: [
+        { t:"lang",  s:"彻夜长谈，把分开这段时间的所有细节都说一遍" },
+        { t:"time",  s:"换上家居服，窝在一起，什么都不做也觉得满足" },
+        { t:"act",   s:"对方接过你最重的行李，带你去吃你最想吃的那一顿" },
+        { t:"touch", s:"第一时间抓住对方的手，整天都不想松开" }
+      ]
+    },
+    {
+      text: "哪件事最能让你瞬间感到"被充满了电"？",
+      opts: [
+        { t:"lang",  s:"对方说："你在我心里永远是最特别的存在"" },
+        { t:"time",  s:"对方说："走，我带你去你一直想去的那个地方"" },
+        { t:"act",   s:"对方说："那件事我已经替你搞定了，你别担心"" },
+        { t:"rit",   s:"对方说："我偷偷帮你实现了你提过的那个小心愿，今晚见"" }
+      ]
+    },
+    {
+      text: "你心目中最动人的浪漫画面是：",
+      opts: [
+        { t:"lang",  s:"深夜并排躺着，交换只属于彼此的小秘密" },
+        { t:"act",   s:"下雨天，对方绕路来接你，什么都没说，只是撑着伞站在门口等" },
+        { t:"rit",   s:"对方把你们在一起的零碎照片整理成一本小相册，某天悄悄放在你面前" },
+        { t:"touch", s:"走在人群中，对方自然地伸手牵住了你" }
+      ]
+    },
+    {
+      text: "对方做的哪个小细节最让你心动？",
+      opts: [
+        { t:"time",  s:"记得你提过想看的那部电影，特意安排时间陪你去看" },
+        { t:"act",   s:"你刚说嗓子不舒服，对方就立刻递来了药和一杯温水" },
+        { t:"rit",   s:"你随口提了句"最近有点冷"，下次见面他悄悄带来了一条围巾" },
+        { t:"touch", s:"一起看剧时，对方悄悄从身后抱住了你" }
+      ]
+    },
+    {
+      text: "你最享受的二人时光模式是：",
+      opts: [
+        { t:"lang",  s:"深度聊天，彼此分享内心，越聊越停不下来" },
+        { t:"time",  s:"一起做一件普通的日常小事：散步、拼图或者开一段长途" },
+        { t:"rit",   s:"对方提前策划好一个充满专属细节的约会" },
+        { t:"touch", s:"腻在一起，皮肤贴着皮肤，格外安心" }
+      ]
+    },
+    {
+      text: "热闹的聚会上，对方怎么做最让你安心？",
+      opts: [
+        { t:"lang",  s:"聚会后发了一条朋友圈，配的是你们合照和走心的文字" },
+        { t:"time",  s:"人群再热闹，他的眼神和注意力始终落在你身上" },
+        { t:"rit",   s:"出发前就默默把你今晚需要的小物备好放进了你的包里" },
+        { t:"touch", s:"在桌子底下悄悄握住你的手" }
+      ]
+    },
+    {
+      text: "理想的纪念日，你最希望是：",
+      opts: [
+        { t:"lang",  s:"对方写了一封信，把平时说不出口的话都写了进去" },
+        { t:"act",   s:"对方把所有预约和安排都提前做好，你只需要出现就好" },
+        { t:"rit",   s:"你念叨了好几个月的那件东西，他一直记着，在纪念日偷偷买了回来" },
+        { t:"touch", s:"一整天慢下来，不赶时间，就是靠在一起" }
+      ]
+    },
+    {
+      text: "当你们都老了，你觉得爱最动人的样子是：",
+      opts: [
+        { t:"lang",  s:"每天还是会对彼此说"我爱你"，说了几十年也不腻" },
+        { t:"time",  s:"还是会一起去没去过的地方，对世界依然好奇" },
+        { t:"act",   s:"对方还是记得你的口味，一直给你做你爱吃的" },
+        { t:"rit",   s:"每年你的生日，他依然认真策划，从不说"算了吧"" }
+      ]
+    }
+  ];
 
-const questions=[
+  /* ══════════════════════════════════════════════
+     TYPE META
+  ══════════════════════════════════════════════ */
+  var TYPES = {
+    lang:  { name:"语言共鸣型", emoji:"🌸", color:"#c47e6a" },
+    time:  { name:"时刻共享型", emoji:"🕯",  color:"#c09a6a" },
+    act:   { name:"行动守护型", emoji:"🧺", color:"#7a9e8e" },
+    rit:   { name:"用心仪式型", emoji:"🎀", color:"#9a86aa" },
+    touch: { name:"亲密触感型", emoji:"💞", color:"#d07878" }
+  };
 
-{q:"加班到深夜回家，你最想看到的是",
-o:[
-["对方放下手机陪你坐一会","B"],
-["锅里温着一碗热汤面","C"],
-["门上贴着暖心便签","D"],
-["一个紧紧拥抱","E"]
-]},
+  /* ══════════════════════════════════════════════
+     TYPE CONTENT
+  ══════════════════════════════════════════════ */
+  var CONTENT = {
+    lang: {
+      core: "你是亲密关系里的诗人。你相信语言是灵魂之间最短的桥梁——"说出口"对你来说不是多余，而是必要。你通过表达与被表达感受到爱的温度，一句真心话，在你心里胜过十件沉默的事。你喜欢被人"看见"，也喜欢把自己内心真实的样子，一点一点地讲给最爱的人听。",
+      strength: "你善于表达情感，能让伴侣清晰、持续地感受到你的爱意，很少让对方陷入猜测。你在关系中创造了"情感的透明度"，误解往往在你这里无处安家。你也是那种最懂得用言语给对方打气的人——一段话，就能让对方觉得被看见、被托住。✨",
+      growth: "你有时会因为对方"说得不够多"而感到失落，甚至误以为沉默等于冷漠。其实沉默有时是另一种深情，只是频道不同。试着也去学习读懂那些没被说出口的爱——行动里的关心、陪伴里的安定，对方也许一直在用另一种语言爱着你。",
+      tip: "心理学研究发现，伴侣间真正有效的情感沟通——不是讨论家务，而是"我感受到……""我需要……"式的自我表露——能显著提升关系满意度。如果你的伴侣不像你一样善于言辞，不妨把你想听到的话，先勇敢地说给他听。你的语言，本身就是一种邀请。"
+    },
+    time: {
+      core: "你认为爱不是说出来的，而是"在一起"本身。你不需要特别的仪式，不需要精心策划，只要对方真实地出现在你身边，你就能感受到被爱。共处的时光是你感受爱最直接的方式——质量胜过数量，专注胜过形式。"陪着"两个字，在你心里有千斤重。",
+      strength: "你的高质量陪伴能力超强，"在场"本身就是你给对方最大的礼物。你能在日常的相处中创造深度的情感连接，让对方感受到被优先、被重视。你的存在本身就是一种稳定而温暖的力量——对方在你身边，会感到这个世界的噪音少了一些。✨",
+      growth: "你有时会不自觉地把"时间"和"关注"等同，一旦对方忙碌，就会感到被冷落。试着区分"物理在场"和"情感在场"——对方可能正在用你不太擅长感知的方式爱着你。偶尔也告诉对方你的渴望，而不只是等待他猜到。",
+      tip: "依恋理论告诉我们，真正的陪伴不只是"在场"，而是"同频"。你天然理解这一点，这是很珍贵的。给自己的功课是：当你渴望陪伴时，试着说出来，而不是用沉默等待对方来猜。你值得被主动看见，也值得主动开口。"
+    },
+    act: {
+      core: "你的爱藏在每一个"我来吧"里。你不擅长华丽的表白，却会在对方最需要的时候悄悄出现、悄悄搞定。你用双手和行动来诠释承诺，对你来说，"帮你做到"比"说我爱你"更真实。你是那种不说很多，但对方永远知道可以依靠你的人。",
+      strength: "你是关系里的"定海神针"——可靠、踏实、说到做到。对方在你身边拥有真实的安全感，因为他们知道，无论发生什么，你都会在。你的爱不是表演，是一次次日常里的托举，这种爱经得起时间检验。✨",
+      growth: "行动再多，有时对方也需要听到那句话。你的内心有很多柔软，但它们有时被包裹在"我帮你搞定"里，对方不一定能感受到你的情感。试着偶尔也开口说爱——让你内心的温度，也找到言语的出口。接受对方表达的感谢与爱，也是一种勇气。",
+      tip: "心理学上，行动型爱人有时来自一个深层信念："做到，才值得被爱。"温柔地问问自己——你愿意为对方做一切，但你愿意让对方也为你做些什么吗？接受，有时候也是一种勇气，也是给对方一个"被需要"的机会。"
+    },
+    rit: {
+      core: "你相信细节是爱最真实的证据。重要的日子刻在你心里，那些"只属于我们"的小仪式，是你确认关系温度的方式。你把关系经营得像一部精心编排的电影，每一帧都有用心——因为在你看来，一段关系值得被认真对待，值得被记住。",
+      strength: "你让关系充满温度和独特的情感记忆。你往往是对方眼中"最懂我"的那个人，因为你真的在认真地观察、记录、回应。你的用心，会在未来某个不经意的时刻，成为对方这辈子最珍贵的记忆之一。你把"爱"变成了一种可以被感知、被触摸的东西。✨",
+      growth: "不是所有人都对仪式有同等的敏感度。当对方忘记某个纪念日，或者没有按你预期的方式回应，你可能会感到失落甚至委屈。试着温柔地表达你的期待，而不是等待对方自己领悟——"我很在意我们的纪念日，我希望我们一起庆祝"，比沉默失落要有效得多。",
+      tip: "仪式感的背后，是心理学家所说的"关系叙事"——你在用细节编织一个"我们的故事"，这是非常珍贵的能力。记住：仪式感不等于完美，一张真诚的便签，有时比一场精心策划的晚宴更有力量。重要的是心意被感知，而不是形式被完美执行。"
+    },
+    touch: {
+      core: "对你来说，肌肤的接触是最直接的情感语言。一个拥抱胜过千言万语，靠近本身就是安全感。你通过身体语言传递"我在这里，我不会走"的信号，让爱变得具体而真实。对你来说，两人之间的距离，不只是物理距离，更是心的距离。",
+      strength: "你在亲密关系中能创造强烈的身体联结感，让伴侣感到被接纳和被需要。你的靠近传递着无条件的接纳——这是很多人一生都在寻找的安全感。你让关系变得温暖而具体，让对方知道：爱不是一个抽象的概念，而是那个实实在在的体温。✨",
+      growth: "记得尊重不同人对身体边界的感受节奏，不是所有人都通过肢体语言接收爱的信号。了解对方的频道，本身就是一种细腻的爱。同时，试着也让语言和触碰一起到达对方——有时候，把那个拥抱的原因说出来，会让它变得更有力量。",
+      tip: "皮肤是人体最大的感觉器官，触碰能促进催产素（"爱的激素"）分泌——这是你本能追求靠近的科学根据，你的直觉没有错。同时，记得让拥抱和语言一起到达对方：信号越完整，被不同频道的人接收到的概率就越高。"
+    }
+  };
 
-{q:"情绪低落时，对方怎么做最治愈你",
-o:[
-["看着你说我懂你的委屈","A"],
-["推掉事情陪你","B"],
-["默默把事情收拾好","C"],
-["轻轻牵你的手","E"]
-]},
+  /* ══════════════════════════════════════════════
+     20 COMBO DESCRIPTIONS  combos[primary][secondary]
+  ══════════════════════════════════════════════ */
+  var COMBOS = {
+    lang: {
+      time:  "你需要的爱，是"说给我听"也是"陪着我"——言语与陪伴，缺一不可。",
+      act:   "你既渴望被人懂，也渴望被人照顾。对你来说，表白和行动同样重要，相辅相成。",
+      rit:   "你喜欢被人"用心记住"——一封信或一个专属你们的小仪式，都是你的充电方式。",
+      touch: "你既想被人读懂内心，也需要身体上的靠近。心灵与体温的双重连接让你感到完整。"
+    },
+    time: {
+      lang:  "你最需要对方的"全情在场"，同时一句走心的话，也会让你心头一暖。",
+      act:   "对你来说，陪伴是基础，而对方默默把事情搞定，是让你最踏实的惊喜。",
+      rit:   "你享受纯粹相处的时光，偶尔一个精心策划的小惊喜，则会让这段关系更加闪亮。",
+      touch: "你最爱两人静静待在一起，而彼此身体的靠近，让这份静默变得更加完整。"
+    },
+    act: {
+      lang:  "你最需要对方用行动证明爱，但一句真心话，同样能让你瞬间软化。",
+      time:  "你渴望对方为你做实事，也渴望他真实地陪在你身边，两者都是你的安全感来源。",
+      rit:   "你喜欢被照顾，同时也喜欢对方记住你的细节、偶尔给你一个"他一直在用心"的惊喜。",
+      touch: "你需要被人照顾，也需要身体的靠近——爱对你来说必须落地，必须可以被感受到。"
+    },
+    rit: {
+      lang:  "你相信细节是爱的证据，同时对方说出口的那句认可，会让你的心更加笃定。",
+      time:  "你在意每一个重要时刻，而对方的专心陪伴，是让这些时刻真正成立的关键。",
+      act:   "你重视仪式，也重视实际——对你来说，用心策划与默默付出，都是爱的真实证明。",
+      touch: "你在意每个细节与仪式，同时对方的靠近与触碰，是让这些仪式真正有温度的原因。"
+    },
+    touch: {
+      lang:  "你靠身体语言感知爱，同时对方说出口的那句话，也能让你安心许多。",
+      time:  "你需要靠近，也需要陪伴——最好的状态是：我们在一起，而且贴得很近。",
+      act:   "你需要感受到身体上的安全感，也需要对方用实际行动证明"我在你身边"。",
+      rit:   "你通过靠近感受爱，也会因为对方的那些精心小细节而怦然心动。"
+    }
+  };
 
-{q:"异地久别重逢，你最想做",
-o:[
-["彻夜聊天","A"],
-["窝在一起发呆","B"],
-["带你去吃顿好的","C"],
-["直接抱住","E"]
-]},
+  /* ══════════════════════════════════════════════
+     STATE
+  ══════════════════════════════════════════════ */
+  var state = {
+    qIndex: 0,
+    scores: { lang:0, time:0, act:0, rit:0, touch:0 },
+    locked: false,
+    primaryType: null,
+    secondaryType: null
+  };
 
-{q:"哪句话最能让你充满电",
-o:[
-["你在我心里最特别","A"],
-["走带你去想去的地方","B"],
-["这件事交给我","C"],
-["我帮你实现小心愿","D"]
-]},
+  /* ══════════════════════════════════════════════
+     HELPERS
+  ══════════════════════════════════════════════ */
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    var el = document.getElementById('screen-' + id);
+    el.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-{q:"最动人的浪漫",
-o:[
-["深夜交换秘密","A"],
-["默默替你搞定难题","C"],
-["准备惊喜","D"],
-["在人群中牵手","E"]
-]},
+  function el(id) { return document.getElementById(id); }
 
-{q:"哪个细节最让你心动",
-o:[
-["记得你想看的电影","B"],
-["生病时递药","C"],
-["悄悄买你提过的东西","D"],
-["自然搂住你","E"]
-]},
+  /* ══════════════════════════════════════════════
+     START / RESTART
+  ══════════════════════════════════════════════ */
+  function startQuiz() {
+    state.qIndex = 0;
+    state.scores = { lang:0, time:0, act:0, rit:0, touch:0 };
+    state.locked = false;
+    showScreen('quiz');
+    renderQuestion();
+  }
 
-{q:"最享受的二人时光",
-o:[
-["深度聊天","A"],
-["一起做日常小事","B"],
-["精心约会","D"],
-["腻在一起","E"]
-]},
+  /* ══════════════════════════════════════════════
+     RENDER QUESTION
+  ══════════════════════════════════════════════ */
+  function renderQuestion() {
+    state.locked = false;
+    var q = QUESTIONS[state.qIndex];
+    var n = state.qIndex + 1;
+    var total = QUESTIONS.length;
 
-{q:"聚会场合最让你安心",
-o:[
-["朋友圈晒合照","A"],
-["目光始终在你身上","B"],
-["准备小物件","D"],
-["桌下牵手","E"]
-]},
+    el('q-num').textContent = n;
+    el('q-num-label').textContent = 'Q' + (n < 10 ? '0'+n : n);
+    el('q-text').textContent = q.text;
+    el('progress-bar').style.width = ((state.qIndex / total) * 100) + '%';
+    el('progress-bar').parentElement.setAttribute('aria-valuenow', state.qIndex);
 
-{q:"纪念日你最希望",
-o:[
-["写一封信","A"],
-["一起度过一天","B"],
-["准备惊喜","D"],
-["拥抱很久","E"]
-]},
+    // Re-trigger card animation
+    var card = el('q-card');
+    card.style.animation = 'none';
+    void card.offsetWidth; // force reflow
+    card.style.animation = '';
 
-{q:"理想爱情是",
-o:[
-["能聊一辈子","A"],
-["一直在彼此身边","B"],
-["遇事有人托底","C"],
-["永远保持浪漫","D"]
-]}
+    var optEl = el('options');
+    optEl.innerHTML = '';
+    var letters = ['A','B','C','D'];
 
-]
+    q.opts.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'opt';
+      btn.setAttribute('aria-label', letters[i] + ': ' + opt.s);
+      btn.innerHTML =
+        '<span class="opt-letter">' + letters[i] + '</span>' +
+        '<span class="opt-text">' + opt.s + '</span>';
 
-function startTest(){
-document.getElementById("start").style.display="none"
-document.getElementById("quiz").style.display="block"
-render()
-}
+      btn.addEventListener('click', function() {
+        if (state.locked) return;
+        state.locked = true;
 
-function render(){
+        optEl.querySelectorAll('.opt').forEach(function(b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        state.scores[opt.t]++;
 
-let q=questions[current]
+        setTimeout(function() {
+          state.qIndex++;
+          if (state.qIndex < QUESTIONS.length) {
+            renderQuestion();
+          } else {
+            el('progress-bar').style.width = '100%';
+            setTimeout(showResults, 300);
+          }
+        }, 400);
+      });
 
-document.getElementById("q").innerText="Q"+(current+1)+" · "+q.q
+      optEl.appendChild(btn);
+    });
+  }
 
-let html=""
+  /* ══════════════════════════════════════════════
+     SHOW RESULTS
+  ══════════════════════════════════════════════ */
+  function showResults() {
+    var sorted = Object.keys(state.scores).sort(function(a,b){
+      return state.scores[b] - state.scores[a];
+    });
+    var pri = sorted[0];
+    var sec = sorted[1];
+    state.primaryType   = pri;
+    state.secondaryType = sec;
 
-q.o.forEach(o=>{
-html+=`<div class="option" onclick="choose('${o[1]}')">${o[0]}</div>`
-})
+    var PT = TYPES[pri];
+    var ST = TYPES[sec];
+    var C  = CONTENT[pri];
 
-document.getElementById("options").innerHTML=html
-document.getElementById("index").innerText=(current+1)+"/"+questions.length
-document.getElementById("bar").style.width=(current/questions.length)*100+"%"
+    el('r-emojis').textContent   = PT.emoji + ' ' + ST.emoji;
+    el('r-title').textContent    = PT.name.replace('型','') + ' × ' + ST.name;
+    el('r-sub').textContent      = '主频：' + PT.emoji + ' ' + PT.name + '　副频：' + ST.emoji + ' ' + ST.name;
+    el('r-core').textContent     = C.core;
+    el('r-strength').textContent = C.strength;
+    el('r-growth').textContent   = C.growth;
+    el('r-tip').textContent      = C.tip;
+    el('r-combo').textContent    = '「' + COMBOS[pri][sec] + '」';
 
-}
+    // Score bars
+    var barsEl = el('score-bars');
+    barsEl.innerHTML = '';
+    var typeOrder = ['lang','time','act','rit','touch'];
+    var total = QUESTIONS.length;
 
-function choose(t){
+    typeOrder.forEach(function(key) {
+      var info = TYPES[key];
+      var val  = state.scores[key];
+      var pct  = Math.round((val / total) * 100);
+      var div  = document.createElement('div');
+      div.className = 'bar-row';
+      div.innerHTML =
+        '<div class="bar-label">' +
+          '<span>' + info.emoji + ' ' + info.name + '</span>' +
+          '<span class="bar-count">' + val + ' / ' + total + '</span>' +
+        '</div>' +
+        '<div class="bar-track">' +
+          '<div class="bar-fill" style="background:' + info.color + '" data-pct="' + pct + '"></div>' +
+        '</div>';
+      barsEl.appendChild(div);
+    });
 
-answers[current]=t
-score[t]++
+    showScreen('result');
 
-current++
+    // Animate bars after paint
+    requestAnimationFrame(function() {
+      setTimeout(function() {
+        document.querySelectorAll('.bar-fill').forEach(function(b) {
+          b.style.width = b.getAttribute('data-pct') + '%';
+        });
+      }, 250);
+    });
+  }
 
-if(current<questions.length){
-render()
-}else{
-showResult()
-}
+  /* ══════════════════════════════════════════════
+     SHARE
+  ══════════════════════════════════════════════ */
+  function shareResult() {
+    var PT = state.primaryType ? TYPES[state.primaryType] : null;
+    var ST = state.secondaryType ? TYPES[state.secondaryType] : null;
+    var text = PT && ST
+      ? '我测出来是【' + PT.emoji + PT.name + ' × ' + ST.emoji + ST.name + '】！你是哪种爱的频率？'
+      : '来测测你的爱的频率吧！';
+    var url = window.location.href.split('?')[0];
 
-}
+    if (navigator.share) {
+      navigator.share({ title:'爱的频率 · 亲密联结风格测试', text: text, url: url })
+        .catch(function(){});
+    } else {
+      var copyText = text + '\n' + url;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(copyText).then(function() {
+          alert('✅ 已复制到剪贴板，快去分享给朋友！');
+        }).catch(function() {
+          prompt('复制下面的文字分享给朋友：', copyText);
+        });
+      } else {
+        prompt('复制下面的文字分享给朋友：', copyText);
+      }
+    }
+  }
 
-function prev(){
+  /* ══════════════════════════════════════════════
+     BIND EVENTS
+  ══════════════════════════════════════════════ */
+  el('btn-start').addEventListener('click', startQuiz);
+  el('btn-retry').addEventListener('click', startQuiz);
+  el('btn-share').addEventListener('click', shareResult);
 
-if(current===0)return
-
-current--
-
-let t=answers[current]
-score[t]--
-
-render()
-
-}
-
-function showResult(){
-
-document.getElementById("quiz").style.display="none"
-document.getElementById("result").style.display="block"
-
-let sorted=Object.entries(score).sort((a,b)=>b[1]-a[1])
-
-let main=sorted[0][0]
-let sub=sorted[1][0]
-
-document.getElementById("title").innerText=
-types[main]+" × "+types[sub]
-
-document.getElementById("combo").innerText=
-combo(main,sub)
-
-document.getElementById("main").innerText=descriptions[main]
-
-document.getElementById("sub").innerText=
-"你的第二频率："+types[sub]+"\n\n"+descriptions[sub]
-
-}
-
-function combo(m,s){
-
-if(m==="B"&&s==="C"){
-return "你是典型的稳定型爱人：既需要陪伴，也非常看重行动带来的安全感。"
-}
-
-if(m==="A"&&s==="E"){
-return "你是情感表达型爱人：既需要语言确认，也需要身体的靠近。"
-}
-
-return "你的爱的表达是复合型的，你既通过一种方式表达爱，也通过另一种方式感受到被爱。"
-
-}
-
-const descriptions={
-
-A:`🌸语言共鸣型
-你是亲密关系里的诗人。你相信语言是灵魂之间最短的桥梁。`,
-
-B:`🕯时刻共享型
-你认为爱不是说出来的，而是在一起本身。`,
-
-C:`🧺行动守护型
-你的爱藏在每一个“我来吧”里。`,
-
-D:`🎀用心仪式型
-你相信细节是爱最真实的证据。`,
-
-E:`💞亲密触感型
-触碰是你最直接的情感语言。`
-
-}
-
+}); // end DOMContentLoaded
 </script>
-
 </body>
 </html>
