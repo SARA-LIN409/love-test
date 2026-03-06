@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>爱的频率 · 亲密联结风格测试</title>
+<title>爱的频率测试</title>
 
 <style>
 
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
-background:linear-gradient(135deg,#f8efe9,#f3e7e4);
+background:linear-gradient(135deg,#f6ebe7,#f4f1ef);
 color:#4b3a34;
 }
 
@@ -24,47 +24,47 @@ padding:30px;
 background:white;
 border-radius:24px;
 padding:35px;
-box-shadow:0 20px 50px rgba(0,0,0,0.08);
+box-shadow:0 25px 60px rgba(0,0,0,0.08);
 }
 
 h1{
 text-align:center;
 font-size:34px;
-margin-bottom:10px;
 }
 
 .subtitle{
 text-align:center;
 color:#8b6f63;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 button{
 background:#c98f6f;
 color:white;
 border:none;
-padding:16px 30px;
-border-radius:16px;
-font-size:18px;
+padding:14px 28px;
+border-radius:14px;
+font-size:16px;
 cursor:pointer;
-display:block;
-margin:30px auto;
 }
 
 button:hover{
 opacity:0.9;
 }
 
-.option{
-border:1px solid #eee;
-border-radius:12px;
-padding:14px;
-margin:10px 0;
-cursor:pointer;
+.type-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:25px;
 }
 
-.option:hover{
+.type-card{
 background:#faf7f6;
+padding:14px;
+border-radius:12px;
+text-align:center;
+font-size:14px;
 }
 
 .progress{
@@ -81,55 +81,72 @@ background:#c98f6f;
 width:0%;
 }
 
-.result-card{
-background:white;
-padding:30px;
-border-radius:24px;
-box-shadow:0 20px 50px rgba(0,0,0,0.1);
+.option{
+border:1px solid #eee;
+padding:14px;
+border-radius:12px;
+margin:10px 0;
+cursor:pointer;
 }
 
-.type{
-font-size:26px;
+.option:hover{
+background:#faf7f6;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+margin-top:20px;
+}
+
+.result-title{
 text-align:center;
-margin-bottom:10px;
+font-size:26px;
+margin-bottom:15px;
 }
 
-.section{
-margin-top:25px;
-line-height:1.7;
+.result-text{
+line-height:1.8;
+white-space:pre-line;
 }
 
 </style>
-</head>
 
+</head>
 
 <body>
 
 <div class="container">
 
+<!-- start -->
+
 <div id="startPage" class="card">
 
 <h1>你用什么频率<br>发出爱的信号？</h1>
 
-<div class="subtitle">
-LOVE FREQUENCY TEST
-</div>
+<div class="subtitle">LOVE FREQUENCY TEST</div>
 
 <p style="text-align:center;line-height:1.8">
-每个人都在爱，但爱的方式却大不相同。<br>
-有人用语言，有人用陪伴，有人用行动，有人用细节，有人用触碰。
-<br><br>
-这套测试没有“正确答案”，只有最适合你的频率。
+每个人都在爱，但爱的方式却大不相同。
 </p>
 
-<button onclick="startTest()">开始测试</button>
+<div class="type-grid">
 
-<p style="text-align:center;color:#999">
-共10题 · 约3分钟
-</p>
+<div class="type-card">🌸语言共鸣</div>
+<div class="type-card">🕯时刻共享</div>
+<div class="type-card">🧺行动守护</div>
+<div class="type-card">🎀用心仪式</div>
+<div class="type-card">💞亲密触感</div>
 
 </div>
 
+<div style="text-align:center;margin-top:30px">
+<button onclick="startTest()">开始测试</button>
+</div>
+
+</div>
+
+<!-- quiz -->
 
 <div id="quizPage" style="display:none">
 
@@ -139,174 +156,109 @@ LOVE FREQUENCY TEST
 
 <div class="card">
 
-<h2 id="questionTitle"></h2>
+<h2 id="question"></h2>
 
 <div id="options"></div>
 
+<div class="nav">
+
+<button onclick="prevQuestion()">上一题</button>
+
+<div id="qIndex"></div>
+
+</div>
+
 </div>
 
 </div>
 
+<!-- result -->
 
 <div id="resultPage" style="display:none">
 
-<div class="result-card">
+<div class="card">
 
-<div class="type" id="resultTitle"></div>
+<div class="result-title" id="resultTitle"></div>
 
-<div class="section" id="resultText"></div>
-
-<div class="section" id="comboText"></div>
-
-<div class="section" style="text-align:center;margin-top:30px;color:#888">
-截图分享给TA看看吧 💖
-</div>
+<div class="result-text" id="resultText"></div>
 
 </div>
 
 </div>
 
 </div>
-
 
 <script>
 
+let index=0
+
+let answers=[]
+
+let score={
+A:0,B:0,C:0,D:0,E:0
+}
+
 const questions=[
+
 {
-q:"加班到深夜回家，你最想看到的是：",
+q:"加班到深夜回家，你最想看到的是",
 o:[
-["静静陪你坐一会儿","B"],
-["温着你爱吃的热汤面","C"],
-["手写暖心便签","D"],
-["一个紧紧的拥抱","E"]
+["静静陪你坐一会","B"],
+["温着一碗热汤面","C"],
+["写满暖心话的便签","D"],
+["一个紧紧拥抱","E"]
 ]
 },
 
 {
-q:"情绪突然低落，对方怎么做最能治愈你？",
+q:"情绪突然低落，对方怎么做最能治愈你",
 o:[
-["说“我懂你的委屈”","A"],
-["推掉事情专心陪你","B"],
-["默默替你收拾好一切","C"],
-["轻轻牵手或摸头","E"]
-]
-},
-
-{
-q:"异地久别重逢，你最想做的是：",
-o:[
-["彻夜聊天","A"],
-["窝在一起发呆","B"],
-["带你吃顿好的","C"],
-["紧紧拥抱","E"]
-]
-},
-
-{
-q:"哪句话最能让你瞬间被充满电？",
-o:[
-["你在我心里最特别","A"],
-["走，带你去想去的地方","B"],
-["这件事交给我","C"],
-["偷偷实现你的小心愿","D"]
-]
-},
-
-{
-q:"你心中最动人的浪漫画面是：",
-o:[
-["交换只属于两人的秘密","A"],
-["替你包揽不擅长的事","C"],
-["记住你所有喜好准备惊喜","D"],
-["在人群中牵紧你的手","E"]
-]
-},
-
-{
-q:"哪个小细节最让你心动？",
-o:[
-["记得你想看的电影","B"],
-["生病时递药和热水","C"],
-["悄悄买来你提过的小东西","D"],
-["看剧时自然搂着你","E"]
-]
-},
-
-{
-q:"你最享受的二人时光是：",
-o:[
-["深度聊天","A"],
-["一起做日常小事","B"],
-["精心策划的小约会","D"],
-["腻在一起贴贴","E"]
-]
-},
-
-{
-q:"在热闹聚会场合，对方怎么做最让你安心？",
-o:[
-["朋友圈晒你们的走心合照","A"],
-["目光始终在你身上","B"],
-["准备小惊喜安排","D"],
-["桌下悄悄握住你的手","E"]
-]
-},
-
-{
-q:"理想纪念日你最希望：",
-o:[
-["写满真心话的信","A"],
-["替你处理焦虑的事","C"],
-["记得你念叨很久的东西","D"],
-["长时间亲密相处","E"]
-]
-},
-
-{
-q:"当你们都老了，你觉得最动人的爱是：",
-o:[
-["每天依然说我爱你","A"],
-["一起晒太阳聊天","B"],
-["依然为你做饭","C"],
-["每年生日认真准备","D"]
+["说我懂你的委屈","A"],
+["推掉事情陪你","B"],
+["默默把事情做好","C"],
+["轻轻牵你的手","E"]
 ]
 }
+
 ]
 
-
-let index=0
-let score={A:0,B:0,C:0,D:0,E:0}
-
 function startTest(){
+
 document.getElementById("startPage").style.display="none"
 document.getElementById("quizPage").style.display="block"
+
 renderQuestion()
+
 }
 
 function renderQuestion(){
 
 let q=questions[index]
 
-document.getElementById("questionTitle").innerText=
+document.getElementById("question").innerText=
 "Q"+(index+1)+" · "+q.q
 
-let optionsHTML=""
+let html=""
 
 q.o.forEach(o=>{
-optionsHTML+=`
-<div class="option" onclick="selectOption('${o[1]}')">
-${o[0]}
-</div>
-`
+
+html+=`<div class="option" onclick="choose('${o[1]}')">${o[0]}</div>`
+
 })
 
-document.getElementById("options").innerHTML=optionsHTML
+document.getElementById("options").innerHTML=html
+
+document.getElementById("qIndex").innerText=
+(index+1)+"/"+questions.length
 
 document.getElementById("progressBar").style.width=
-((index)/questions.length)*100+"%"
+(index/questions.length)*100+"%"
+
 }
 
-function selectOption(type){
+function choose(type){
+
+answers[index]=type
 
 score[type]++
 
@@ -324,14 +276,30 @@ showResult()
 
 }
 
+function prevQuestion(){
+
+if(index===0)return
+
+index--
+
+let type=answers[index]
+
+score[type]--
+
+renderQuestion()
+
+}
+
 function showResult(){
 
 document.getElementById("quizPage").style.display="none"
+
 document.getElementById("resultPage").style.display="block"
 
 let sorted=Object.entries(score).sort((a,b)=>b[1]-a[1])
 
 let main=sorted[0][0]
+
 let sub=sorted[1][0]
 
 const types={
@@ -345,16 +313,27 @@ E:"💞亲密触感型"
 document.getElementById("resultTitle").innerText=
 types[main]+" × "+types[sub]
 
-document.getElementById("resultText").innerHTML=
-"你在亲密关系中拥有独特的爱的表达方式。<br><br>"+
-"你的主要频率是 <b>"+types[main]+"</b> ，"+
-"同时也带着 <b>"+types[sub]+"</b> 的特质。<br><br>"+
-"这意味着你既通过这种方式表达爱，也通过这种方式感受到被爱。"
+document.getElementById("resultText").innerText=
+descriptions[main]+"\n\n副频率："+types[sub]
 
-document.getElementById("comboText").innerHTML=
-"真正长久的关系，不是完全相同的频率，"+
-"而是彼此愿意学习对方的语言。<br><br>"+
-"当两个人开始理解彼此的频道，爱就会变得更容易被听见。"
+}
+
+const descriptions={
+
+A:`🌸语言共鸣型
+你是亲密关系里的诗人...`,
+
+B:`🕯时刻共享型
+你认为爱不是说出来的...`,
+
+C:`🧺行动守护型
+你的爱藏在每一个我来吧里...`,
+
+D:`🎀用心仪式型
+你相信细节是爱最真实的证据...`,
+
+E:`💞亲密触感型
+对你来说肌肤接触是最直接的语言...`
 
 }
 
